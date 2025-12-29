@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Finaliser le Paiement | PAY FUSION</title>
+    <title>Paiement Sécurisé | PAY FUSION</title>
     
     <!-- POLICE INTER -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -24,6 +24,7 @@
             --white: #F8F8F8;
             --gray-text: #888888;
             --border: #1A1A1A;
+            --error-red: #ef4444;
             --font-size-base: 0.875rem; /* 14px */
         }
 
@@ -62,7 +63,7 @@
         }
 
         .header-left i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
-        .header-center img { height: 30px; object-fit: contain; }
+        .header-center img { height: 32px; object-fit: contain; }
         .header-right { width: 40px; }
 
         /* =========================================
@@ -71,20 +72,30 @@
         main { padding: 100px 5% 40px; max-width: 600px; margin: 0 auto; }
 
         .payment-header { text-align: center; margin-bottom: 35px; }
-        .payment-header h1 { font-size: 1.3rem; text-transform: uppercase; color: var(--gold-solid); margin-bottom: 8px; }
+        .payment-header h1 { 
+            font-size: 1.3rem; 
+            text-transform: uppercase; 
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
         .payment-header p { color: var(--gray-text); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
 
         /* RÉCAPITULATIF COMMANDE */
         .order-preview {
             background: var(--black-card);
-            border: 1px solid var(--gold-solid);
+            border: 1px solid var(--border);
             padding: 20px;
             border-radius: 4px;
             margin-bottom: 30px;
         }
-        .order-preview h4 { font-size: 0.7rem; color: var(--gold-solid); text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-        .preview-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem; }
-        .preview-row.total { border-top: 1px dashed var(--border); margin-top: 10px; padding-top: 10px; font-weight: 800; font-size: 1rem; color: var(--gold-solid); }
+        .order-preview h4 { font-size: 0.7rem; color: var(--gold-solid); text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; font-weight: 700; }
+        .preview-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.8rem; }
+        .preview-row span { color: var(--gray-text); }
+        .preview-row strong { color: var(--white); font-weight: 600; }
+        .preview-row.total { border-top: 1px dashed var(--border); margin-top: 10px; padding-top: 10px; font-weight: 800; font-size: 1.1rem; color: var(--gold-solid); }
 
         /* CHOIX MÉTHODE PAIEMENT */
         .payment-methods {
@@ -102,9 +113,9 @@
             cursor: pointer;
             transition: 0.3s;
         }
-        .method-tab.active { border-color: var(--gold-solid); background: rgba(184, 134, 11, 0.1); }
-        .method-tab img { height: 25px; object-fit: contain; filter: grayscale(1); transition: 0.3s; }
-        .method-tab.active img { filter: grayscale(0); }
+        .method-tab.active { border-color: var(--gold-solid); background: rgba(184, 134, 11, 0.05); }
+        .method-tab img { height: 22px; object-fit: contain; filter: grayscale(1); opacity: 0.5; transition: 0.3s; }
+        .method-tab.active img { filter: grayscale(0); opacity: 1; }
         .method-tab span { display: block; font-size: 0.65rem; text-transform: uppercase; font-weight: 700; margin-top: 8px; color: var(--gray-text); }
         .method-tab.active span { color: var(--gold-solid); }
 
@@ -118,19 +129,19 @@
             display: none;
             animation: fadeIn 0.4s ease;
         }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .instruction-box h3 { font-size: 0.9rem; color: var(--gold-solid); text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .instruction-details { font-size: 0.85rem; }
-        .instruction-details p { margin-bottom: 8px; color: #ccc; }
+        .instruction-box h3 { font-size: 0.85rem; color: var(--gold-solid); text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-weight: 800; }
+        .instruction-details { font-size: 0.8rem; }
+        .instruction-details p { margin-bottom: 8px; color: #bbb; }
         .instruction-details strong { color: var(--white); font-weight: 700; }
-        .copy-val { background: var(--black); border: 1px solid var(--border); padding: 10px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; font-family: monospace; color: var(--gold-solid); font-size: 0.9rem; }
+        .copy-val { background: var(--black); border: 1px solid var(--border); padding: 12px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; font-family: monospace; color: var(--gold-solid); font-size: 0.95rem; }
 
         /* FORMULAIRE VALIDATION */
         .validation-form { display: none; margin-top: 20px; }
         .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 0.7rem; color: var(--gold-solid); text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
-        .input-group input, .input-group select {
+        .input-group label { display: block; font-size: 0.7rem; color: var(--gold-solid); text-transform: uppercase; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px; }
+        .input-group input {
             width: 100%;
             padding: 14px;
             background: #000;
@@ -138,18 +149,22 @@
             color: var(--white);
             outline: none;
             font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
             border-radius: 2px;
         }
-        .file-upload {
+        .input-group input:focus { border-color: var(--gold-solid); }
+
+        .file-upload-zone {
             border: 2px dashed var(--border);
-            padding: 20px;
+            padding: 30px;
             text-align: center;
             cursor: pointer;
             transition: 0.3s;
+            border-radius: 4px;
         }
-        .file-upload:hover { border-color: var(--gold-solid); }
-        .file-upload i { font-size: 1.5rem; color: var(--gold-solid); margin-bottom: 10px; display: block; }
-        .file-upload p { font-size: 0.75rem; color: var(--gray-text); }
+        .file-upload-zone:hover { border-color: var(--gold-solid); background: rgba(184, 134, 11, 0.02); }
+        .file-upload-zone i { font-size: 1.8rem; color: var(--gold-solid); margin-bottom: 12px; display: block; }
+        .file-upload-zone p { font-size: 0.75rem; color: var(--gray-text); text-transform: uppercase; font-weight: 600; }
 
         .btn-validate {
             width: 100%;
@@ -163,246 +178,277 @@
             letter-spacing: 1px;
             cursor: pointer;
             border-radius: 2px;
-            margin-top: 20px;
+            margin-top: 30px;
+            transition: 0.3s;
         }
+        .btn-validate:disabled { opacity: 0.5; cursor: not-allowed; }
 
+        /* ÉCRAN DE CHARGEMENT */
         .loader-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(5px);
             z-index: 3000;
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
-        .spinner { width: 40px; height: 40px; border: 4px solid rgba(212, 175, 55, 0.1); border-top: 4px solid var(--gold-solid); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        .spinner { 
+            width: 45px; 
+            height: 45px; 
+            border: 3px solid rgba(212, 175, 55, 0.1); 
+            border-top: 3px solid var(--gold-solid); 
+            border-radius: 50%; 
+            animation: spin 1s linear infinite; 
+            margin-bottom: 20px; 
+        }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loader-text { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-solid); font-weight: 700; }
 
     </style>
 </head>
 <body>
 
-    <!-- LOADER -->
+    <!-- LOADER DE SOUMISSION -->
     <div class="loader-overlay" id="global-loader">
         <div class="spinner"></div>
-        <p style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; color: var(--gold-solid);">Validation en cours...</p>
+        <p class="loader-text" id="loader-msg">Traitement de la commande...</p>
     </div>
 
     <!-- HEADER -->
     <header>
         <div class="header-left">
-            <a href="home.html"><i class="fa-solid fa-house"></i></a>
+            <a href="home.html"><i class="fa-solid fa-arrow-left"></i></a>
         </div>
         <div class="header-center">
-            <img src="assets/logos/payfusion-logo.png" alt="PAYFUSION">
+            <img src="assets/logos/payfusion-logo.svg" alt="PAYFUSION">
         </div>
         <div class="header-right"></div>
     </header>
 
     <main>
         <div class="payment-header">
-            <h1>Paiement Sécurisé</h1>
-            <p>Veuillez choisir votre mode de transfert</p>
+            <h1>Validation du Paiement</h1>
+            <p>Suivez les instructions pour finaliser ✓</p>
         </div>
 
-        <!-- RÉSUMÉ -->
+        <!-- RÉSUMÉ COMMANDE -->
         <div class="order-preview">
-            <h4>Détails de la demande</h4>
-            <div id="order-details-container">
-                <!-- Généré par JS -->
+            <h4>Récapitulatif de la commande</h4>
+            <div id="summary-content">
+                <!-- Rempli par JS -->
             </div>
             <div class="preview-row total">
-                <span>Total à envoyer</span>
-                <span id="display-total">0 HTG</span>
+                <span>Total à régler</span>
+                <strong id="final-total">0 HTG</strong>
             </div>
         </div>
 
-        <!-- TABS MÉTHODES -->
+        <!-- SÉLECTION MÉTHODE -->
         <div class="payment-methods">
-            <div class="method-tab" onclick="selectMethod('MonCash')">
+            <div class="method-tab" onclick="setPaymentMethod('MonCash', this)">
                 <img src="assets/logos/moncash-logo.png" alt="MonCash">
                 <span>MonCash</span>
             </div>
-            <div class="method-tab" onclick="selectMethod('NatCash')">
+            <div class="method-tab" onclick="setPaymentMethod('NatCash', this)">
                 <img src="assets/logos/natcash-logo.png" alt="NatCash">
                 <span>NatCash</span>
             </div>
-            <div class="method-tab" onclick="selectMethod('USDT')">
+            <div class="method-tab" onclick="setPaymentMethod('USDT', this)">
                 <img src="assets/logos/usdt-logo.png" alt="USDT">
                 <span>USDT</span>
             </div>
         </div>
 
-        <!-- INSTRUCTIONS DYNAMIQUES -->
-        <div class="payment-instructions" id="instruction-box">
+        <!-- INSTRUCTIONS -->
+        <div class="payment-instructions" id="inst-container">
             <div class="instruction-box">
-                <h3 id="inst-title"><i class="fa-solid fa-building-columns"></i> Infos Destinataire</h3>
-                <div class="instruction-details" id="inst-details">
-                    <!-- Contenu injecté par JS -->
+                <h3 id="inst-title"><i class="fa-solid fa-circle-info"></i> Instructions de transfert</h3>
+                <div class="instruction-details" id="inst-body">
+                    <!-- Rempli dynamiquement -->
                 </div>
             </div>
         </div>
 
-        <!-- FORMULAIRE DE VALIDATION -->
-        <form class="validation-form" id="payment-form">
+        <!-- FORMULAIRE DE PREUVE -->
+        <form class="validation-form" id="pay-validation-form">
             <div id="dynamic-fields">
-                <!-- Champs spécifiques par méthode -->
+                <!-- Champs nom/numéro injectés ici -->
             </div>
 
             <div class="input-group">
-                <label>Montant réellement envoyé (HTG)</label>
-                <input type="number" id="amount-sent" placeholder="Entrez le montant exact" required>
+                <label>Montant envoyé (HTG / USDT)</label>
+                <input type="number" id="exact-amount" placeholder="Ex: 1500" required>
             </div>
 
             <div class="input-group">
                 <label>Preuve de paiement (Screenshot)</label>
-                <div class="file-upload" onclick="document.getElementById('proof-file').click()">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                    <p id="file-name">Cliquez pour ajouter l'image (Max 5Mo)</p>
-                    <input type="file" id="proof-file" accept="image/*" style="display: none;" required onchange="handleFile(this)">
+                <div class="file-upload-zone" onclick="document.getElementById('proof-input').click()">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                    <p id="file-status">Télécharger le reçu (Max 5Mo)</p>
+                    <input type="file" id="proof-input" accept="image/*" style="display:none" onchange="updateFileInfo(this)" required>
                 </div>
             </div>
 
-            <button type="submit" class="btn-validate">Valider ma commande ✓</button>
+            <button type="submit" class="btn-validate" id="submit-order-btn">Confirmer ma commande ✓</button>
         </form>
     </main>
 
-    <!-- FIREBASE COMPAT SDK -->
+    <!-- FIREBASE SDK COMPAT -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
 
     <script>
+        // CONFIGURATION NOUVEAU PROJET (Vérifie bien tes clés)
         const firebaseConfig = {
-        apiKey: "AIzaSyAV3RoOAL4XgGQSGnEU0_Q1q5UcEce4LBg",
-        authDomain: "pay-fusion-d0eaf.firebaseapp.com",
-        projectId: "pay-fusion-d0eaf",
-        storageBucket: "pay-fusion-d0eaf.firebasestorage.app",
-        messagingSenderId: "713035702480",
-        appId: "1:713035702480:web:d05998b07c529ec2043ed5"
+            apiKey: "AIzaSyB5_KighCQRfslRjZtGZPxs3OUqqQRk7IE",
+            authDomain: "pay-fusion-26a79.firebaseapp.com",
+            projectId: "pay-fusion-26a79",
+            storageBucket: "pay-fusion-26a79.firebasestorage.app",
+            messagingSenderId: "771406909196",
+            appId: "1:771406909196:web:27bdf4db07ad8d08418329"
         };
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
         const storage = firebase.storage();
 
-        let pendingOrder = JSON.parse(localStorage.getItem('pendingOrder'));
-        let selectedPaymentMethod = "";
+        // DONNÉES DE LA COMMANDE
+        let orderData = JSON.parse(localStorage.getItem('pendingOrder'));
+        let selectedMethod = "";
 
-        if(!pendingOrder) window.location.href = "home.html";
+        if(!orderData) {
+            window.location.href = "home.html";
+        }
 
-        // Afficher le résumé
-        const detailsContainer = document.getElementById('order-details-container');
-        document.getElementById('display-total').innerText = pendingOrder.total ? pendingOrder.total.toLocaleString() + " Gdes" : pendingOrder.amountHTG.toLocaleString() + " HTG";
-
-        detailsContainer.innerHTML = `
-            <div class="preview-row"><span>Service</span><strong>${pendingOrder.service}</strong></div>
-            <div class="preview-row"><span>Produit</span><strong>${pendingOrder.item || pendingOrder.amountUSD + ' USD'}</strong></div>
-            <div class="preview-row"><span>Destinataire</span><strong>${pendingOrder.beneficiary || pendingOrder.playerID || pendingOrder.netflixEmail}</strong></div>
+        // AFFICHAGE DU RÉSUMÉ
+        const summary = document.getElementById('summary-content');
+        const totalDisp = document.getElementById('final-total');
+        
+        totalDisp.innerText = (orderData.total || orderData.amountHTG).toLocaleString() + " HTG";
+        summary.innerHTML = `
+            <div class="preview-row"><span>Catégorie</span><strong>${orderData.type}</strong></div>
+            <div class="preview-row"><span>Service</span><strong>${orderData.service}</strong></div>
+            <div class="preview-row"><span>Produit/Pack</span><strong>${orderData.item || orderData.amountUSD + " USD"}</strong></div>
+            <div class="preview-row"><span>ID / Email Destinataire</span><strong>${orderData.beneficiary || orderData.playerID || orderData.netflixEmail}</strong></div>
         `;
 
-        function selectMethod(method) {
-            selectedPaymentMethod = method;
+        // GESTION DES MÉTHODES
+        function setPaymentMethod(method, el) {
+            selectedMethod = method;
             document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            el.classList.add('active');
 
-            const instBox = document.getElementById('instruction-box');
-            const instDetails = document.getElementById('inst-details');
-            const form = document.getElementById('payment-form');
-            const dynamicFields = document.getElementById('dynamic-fields');
+            const instBox = document.getElementById('inst-container');
+            const instBody = document.getElementById('inst-body');
+            const form = document.getElementById('pay-validation-form');
+            const fields = document.getElementById('dynamic-fields');
 
-            instBox.style.display = 'block';
-            form.style.display = 'block';
-            dynamicFields.innerHTML = "";
+            instBox.style.display = "block";
+            form.style.display = "block";
+            fields.innerHTML = "";
 
             if(method === 'MonCash') {
-                instDetails.innerHTML = `
-                    <p>Faites le transfert MonCash vers ce numéro :</p>
+                instBody.innerHTML = `
+                    <p>Effectuez le transfert vers ce compte professionnel :</p>
                     <div class="copy-val"><span>+50939442808</span><i class="fa-regular fa-copy"></i></div>
                     <p style="margin-top:10px;">Propriétaire : <strong>Marco Bien-Aimé</strong></p>
-                    <p>Minimum : <strong>150 HTG</strong> | Délai : <strong>10-30 min</strong></p>
+                    <p>Minimum requis : <strong>150 HTG</strong></p>
                 `;
-                dynamicFields.innerHTML = `
-                    <div class="input-group"><label>Nom Complet (Expéditeur)</label><input type="text" id="sender-name" placeholder="Votre nom complet" required></div>
-                    <div class="input-group"><label>Numéro MonCash utilisé</label><input type="tel" id="sender-info" placeholder="+509" required></div>
-                `;
+                fields.innerHTML = `<div class="input-group"><label>Nom de l'expéditeur</label><input type="text" id="s-name" placeholder="Nom complet" required></div>
+                                   <div class="input-group"><label>Numéro MonCash</label><input type="tel" id="s-info" placeholder="+509" required></div>`;
             } else if(method === 'NatCash') {
-                instDetails.innerHTML = `
-                    <p>Faites le transfert NatCash vers ce numéro :</p>
+                instBody.innerHTML = `
+                    <p>Effectuez le transfert vers ce compte professionnel :</p>
                     <div class="copy-val"><span>+50935741778</span><i class="fa-regular fa-copy"></i></div>
                     <p style="margin-top:10px;">Propriétaire : <strong>Marco Bien-Aimé</strong></p>
-                    <p>Minimum : <strong>150 HTG</strong> | Délai : <strong>10-30 min</strong></p>
+                    <p>Minimum requis : <strong>150 HTG</strong></p>
                 `;
-                dynamicFields.innerHTML = `
-                    <div class="input-group"><label>Nom Complet (Expéditeur)</label><input type="text" id="sender-name" placeholder="Votre nom complet" required></div>
-                    <div class="input-group"><label>Numéro NatCash utilisé</label><input type="tel" id="sender-info" placeholder="+509" required></div>
-                `;
+                fields.innerHTML = `<div class="input-group"><label>Nom de l'expéditeur</label><input type="text" id="s-name" placeholder="Nom complet" required></div>
+                                   <div class="input-group"><label>Numéro NatCash</label><input type="tel" id="s-info" placeholder="+509" required></div>`;
             } else if(method === 'USDT') {
-                instDetails.innerHTML = `
-                    <p>Envoyez les USDT (Réseau <strong>TRC20</strong>) :</p>
-                    <div class="copy-val" style="font-size:0.7rem;"><span>TJHVCbXMBQdtzurHngB1aXSFkR9TWYvZ94</span><i class="fa-regular fa-copy"></i></div>
-                    <p style="margin-top:10px;">Minimum : <strong>Équivalent 150 HTG</strong></p>
+                instBody.innerHTML = `
+                    <p>Envoyez le montant via le réseau <strong>TRC20</strong> :</p>
+                    <div class="copy-val" style="font-size:0.75rem;"><span>TJHVCbXMBQdtzurHngB1aXSFkR9TWYvZ94</span><i class="fa-regular fa-copy"></i></div>
+                    <p style="margin-top:10px;">Vérifiez bien le réseau (TRON / TRC20) avant l'envoi.</p>
                 `;
-                dynamicFields.innerHTML = `
-                    <div class="input-group"><label>Portefeuille (Ex: Binance, Trust)</label><input type="text" id="sender-name" placeholder="Nom de l'app utilisée" required></div>
-                    <div class="input-group"><label>Votre adresse USDT (Départ)</label><input type="text" id="sender-info" placeholder="Adresse du portefeuille" required></div>
-                `;
+                fields.innerHTML = `<div class="input-group"><label>Application utilisée (Ex: Binance)</label><input type="text" id="s-name" placeholder="Nom de l'application" required></div>
+                                   <div class="input-group"><label>Votre adresse USDT (Départ)</label><input type="text" id="s-info" placeholder="Adresse du portefeuille" required></div>`;
             }
         }
 
-        function handleFile(input) {
-            const fileName = input.files[0] ? input.files[0].name : "Cliquez pour ajouter l'image";
-            document.getElementById('file-name').innerText = fileName;
+        function updateFileInfo(input) {
+            const status = document.getElementById('file-status');
+            if(input.files[0]) status.innerText = "✓ Fichier : " + input.files[0].name;
+            else status.innerText = "Télécharger le reçu (Max 5Mo)";
         }
 
-        // SOUMISSION FINALE
-        document.getElementById('payment-form').addEventListener('submit', async (e) => {
+        // SOUMISSION FINALE (LOGIQUE RÉELLE)
+        document.getElementById('pay-validation-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const loader = document.getElementById('global-loader');
-            const file = document.getElementById('proof-file').files[0];
-            const senderName = document.getElementById('sender-name').value;
-            const senderInfo = document.getElementById('sender-info').value;
-            const amountSent = document.getElementById('amount-sent').value;
+            const submitBtn = document.getElementById('submit-order-btn');
+            const file = document.getElementById('proof-input').files[0];
+            
+            // Vérification utilisateur
+            const user = auth.currentUser;
+            if(!user) {
+                alert("Erreur : Vous devez être connecté pour commander ●");
+                window.location.href = "login.html";
+                return;
+            }
 
-            loader.style.display = 'flex';
+            loader.style.display = "flex";
+            submitBtn.disabled = true;
 
             try {
-                // 1. Upload de l'image
-                const storageRef = storage.ref(`preuves/${Date.now()}_${file.name}`);
-                const snapshot = await storageRef.put(file);
-                const downloadURL = await snapshot.ref.getDownloadURL();
-
-                // 2. Création de la commande dans Firestore
-                const user = auth.currentUser;
+                // 1. Upload vers Firebase Storage
+                console.log("Étape 1 : Upload de la preuve...");
+                const fileName = `preuves/${user.uid}/${Date.now()}_${file.name}`;
+                const storageRef = storage.ref(fileName);
+                const uploadTask = await storageRef.put(file);
+                const downloadURL = await uploadTask.ref.getDownloadURL();
+                
+                // 2. Enregistrement dans Firestore
+                console.log("Étape 2 : Création de la commande...");
                 await db.collection('commandes').add({
-                    userId: user ? user.uid : "Invite",
-                    userEmail: user ? user.email : "Inconnu",
-                    service: pendingOrder.service,
-                    produit: pendingOrder.item || (pendingOrder.amountUSD + " USD"),
-                    detailsDestinataire: pendingOrder.beneficiary || pendingOrder.playerID || pendingOrder.netflixEmail,
-                    methodePaiement: selectedPaymentMethod,
-                    nomExpediteur: senderName,
-                    infoExpediteur: senderInfo,
-                    montantPaye: amountSent,
+                    userId: user.uid,
+                    userEmail: user.email,
+                    service: orderData.service,
+                    produit: orderData.item || (orderData.amountUSD + " USD"),
+                    detailsDestinataire: orderData.beneficiary || orderData.playerID || orderData.netflixEmail,
+                    methodePaiement: selectedMethod,
+                    nomExpediteur: document.getElementById('s-name').value,
+                    infoExpediteur: document.getElementById('s-info').value,
+                    montantPaye: document.getElementById('exact-amount').value,
                     preuveUrl: downloadURL,
                     statut: "En attente",
                     date: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                // 3. Succès
+                // 3. Finalisation
                 localStorage.removeItem('pendingOrder');
-                alert("✓ Commande soumise avec succès ! Elle sera validée par l'administrateur sous peu.");
+                alert("✓ Commande reçue ! Elle est maintenant en attente de validation par l'administrateur.");
                 window.location.href = "home.html";
 
             } catch (error) {
-                console.error(error);
-                alert("Erreur lors de la soumission [ ✗ ] : " + error.message);
-                loader.style.display = 'none';
+                console.error("ERREUR CRITIQUE :", error);
+                loader.style.display = "none";
+                submitBtn.disabled = false;
+                
+                let errorMsg = "Erreur lors de la validation ● ";
+                if(error.code === 'storage/unauthorized') errorMsg += "Accès au stockage refusé. Vérifiez vos règles Storage.";
+                else if(error.code === 'permission-denied') errorMsg += "Accès Firestore refusé. Vérifiez vos règles Firestore.";
+                else errorMsg += error.message;
+
+                alert(errorMsg);
             }
         });
 
