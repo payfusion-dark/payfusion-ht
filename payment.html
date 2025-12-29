@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Finaliser le Paiement | PAY FUSION</title>
+    
+    <!-- POLICE INTER -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- ICONS EXTERNES (FONTAWESOME) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* =========================================
+           SYSTÈME DE DESIGN GOLD MÉTALLIQUE
+           ========================================= */
+        :root {
+            --gold-gradient: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --gold-solid: #D4AF37;
+            --black: #000000;
+            --black-soft: #0A0A0A;
+            --black-card: #111111;
+            --white: #F8F8F8;
+            --gray-text: #888888;
+            --border: #1A1A1A;
+            --font-size-base: 0.875rem; /* 14px */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--font-size-base);
+            color: var(--white);
+            background-color: var(--black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           HEADER FIXE
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            z-index: 1000;
+        }
+
+        .header-left i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
+        .header-center img { height: 30px; object-fit: contain; }
+        .header-right { width: 40px; }
+
+        /* =========================================
+           CONTENU PRINCIPAL
+           ========================================= */
+        main { padding: 100px 5% 40px; max-width: 600px; margin: 0 auto; }
+
+        .payment-header { text-align: center; margin-bottom: 35px; }
+        .payment-header h1 { font-size: 1.3rem; text-transform: uppercase; color: var(--gold-solid); margin-bottom: 8px; }
+        .payment-header p { color: var(--gray-text); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* RÉCAPITULATIF COMMANDE */
+        .order-preview {
+            background: var(--black-card);
+            border: 1px solid var(--gold-solid);
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+        .order-preview h4 { font-size: 0.7rem; color: var(--gold-solid); text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .preview-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem; }
+        .preview-row.total { border-top: 1px dashed var(--border); margin-top: 10px; padding-top: 10px; font-weight: 800; font-size: 1rem; color: var(--gold-solid); }
+
+        /* CHOIX MÉTHODE PAIEMENT */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .method-tab {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            padding: 15px 5px;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .method-tab.active { border-color: var(--gold-solid); background: rgba(184, 134, 11, 0.1); }
+        .method-tab img { height: 25px; object-fit: contain; filter: grayscale(1); transition: 0.3s; }
+        .method-tab.active img { filter: grayscale(0); }
+        .method-tab span { display: block; font-size: 0.65rem; text-transform: uppercase; font-weight: 700; margin-top: 8px; color: var(--gray-text); }
+        .method-tab.active span { color: var(--gold-solid); }
+
+        /* INSTRUCTIONS PAIEMENT */
+        .payment-instructions {
+            background: #080808;
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .instruction-box h3 { font-size: 0.9rem; color: var(--gold-solid); text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .instruction-details { font-size: 0.85rem; }
+        .instruction-details p { margin-bottom: 8px; color: #ccc; }
+        .instruction-details strong { color: var(--white); font-weight: 700; }
+        .copy-val { background: var(--black); border: 1px solid var(--border); padding: 10px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; font-family: monospace; color: var(--gold-solid); font-size: 0.9rem; }
+
+        /* FORMULAIRE VALIDATION */
+        .validation-form { display: none; margin-top: 20px; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 0.7rem; color: var(--gold-solid); text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 14px;
+            background: #000;
+            border: 1px solid var(--border);
+            color: var(--white);
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            border-radius: 2px;
+        }
+        .file-upload {
+            border: 2px dashed var(--border);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .file-upload:hover { border-color: var(--gold-solid); }
+        .file-upload i { font-size: 1.5rem; color: var(--gold-solid); margin-bottom: 10px; display: block; }
+        .file-upload p { font-size: 0.75rem; color: var(--gray-text); }
+
+        .btn-validate {
+            width: 100%;
+            padding: 18px;
+            background: var(--gold-gradient);
+            color: var(--black);
+            border: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 2px;
+            margin-top: 20px;
+        }
+
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 3000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .spinner { width: 40px; height: 40px; border: 4px solid rgba(212, 175, 55, 0.1); border-top: 4px solid var(--gold-solid); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    </style>
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div class="loader-overlay" id="global-loader">
+        <div class="spinner"></div>
+        <p style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; color: var(--gold-solid);">Validation en cours...</p>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <a href="home.html"><i class="fa-solid fa-house"></i></a>
+        </div>
+        <div class="header-center">
+            <img src="assets/logos/payfusion-logo.png" alt="PAYFUSION">
+        </div>
+        <div class="header-right"></div>
+    </header>
+
+    <main>
+        <div class="payment-header">
+            <h1>Paiement Sécurisé</h1>
+            <p>Veuillez choisir votre mode de transfert</p>
+        </div>
+
+        <!-- RÉSUMÉ -->
+        <div class="order-preview">
+            <h4>Détails de la demande</h4>
+            <div id="order-details-container">
+                <!-- Généré par JS -->
+            </div>
+            <div class="preview-row total">
+                <span>Total à envoyer</span>
+                <span id="display-total">0 HTG</span>
+            </div>
+        </div>
+
+        <!-- TABS MÉTHODES -->
+        <div class="payment-methods">
+            <div class="method-tab" onclick="selectMethod('MonCash')">
+                <img src="assets/logos/moncash-logo.png" alt="MonCash">
+                <span>MonCash</span>
+            </div>
+            <div class="method-tab" onclick="selectMethod('NatCash')">
+                <img src="assets/logos/natcash-logo.png" alt="NatCash">
+                <span>NatCash</span>
+            </div>
+            <div class="method-tab" onclick="selectMethod('USDT')">
+                <img src="assets/logos/usdt-logo.png" alt="USDT">
+                <span>USDT</span>
+            </div>
+        </div>
+
+        <!-- INSTRUCTIONS DYNAMIQUES -->
+        <div class="payment-instructions" id="instruction-box">
+            <div class="instruction-box">
+                <h3 id="inst-title"><i class="fa-solid fa-building-columns"></i> Infos Destinataire</h3>
+                <div class="instruction-details" id="inst-details">
+                    <!-- Contenu injecté par JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- FORMULAIRE DE VALIDATION -->
+        <form class="validation-form" id="payment-form">
+            <div id="dynamic-fields">
+                <!-- Champs spécifiques par méthode -->
+            </div>
+
+            <div class="input-group">
+                <label>Montant réellement envoyé (HTG)</label>
+                <input type="number" id="amount-sent" placeholder="Entrez le montant exact" required>
+            </div>
+
+            <div class="input-group">
+                <label>Preuve de paiement (Screenshot)</label>
+                <div class="file-upload" onclick="document.getElementById('proof-file').click()">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <p id="file-name">Cliquez pour ajouter l'image (Max 5Mo)</p>
+                    <input type="file" id="proof-file" accept="image/*" style="display: none;" required onchange="handleFile(this)">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-validate">Valider ma commande ✓</button>
+        </form>
+    </main>
+
+    <!-- FIREBASE COMPAT SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+        apiKey: "AIzaSyAV3RoOAL4XgGQSGnEU0_Q1q5UcEce4LBg",
+        authDomain: "pay-fusion-d0eaf.firebaseapp.com",
+        projectId: "pay-fusion-d0eaf",
+        storageBucket: "pay-fusion-d0eaf.firebasestorage.app",
+        messagingSenderId: "713035702480",
+        appId: "1:713035702480:web:d05998b07c529ec2043ed5"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        let pendingOrder = JSON.parse(localStorage.getItem('pendingOrder'));
+        let selectedPaymentMethod = "";
+
+        if(!pendingOrder) window.location.href = "home.html";
+
+        // Afficher le résumé
+        const detailsContainer = document.getElementById('order-details-container');
+        document.getElementById('display-total').innerText = pendingOrder.total ? pendingOrder.total.toLocaleString() + " Gdes" : pendingOrder.amountHTG.toLocaleString() + " HTG";
+
+        detailsContainer.innerHTML = `
+            <div class="preview-row"><span>Service</span><strong>${pendingOrder.service}</strong></div>
+            <div class="preview-row"><span>Produit</span><strong>${pendingOrder.item || pendingOrder.amountUSD + ' USD'}</strong></div>
+            <div class="preview-row"><span>Destinataire</span><strong>${pendingOrder.beneficiary || pendingOrder.playerID || pendingOrder.netflixEmail}</strong></div>
+        `;
+
+        function selectMethod(method) {
+            selectedPaymentMethod = method;
+            document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            const instBox = document.getElementById('instruction-box');
+            const instDetails = document.getElementById('inst-details');
+            const form = document.getElementById('payment-form');
+            const dynamicFields = document.getElementById('dynamic-fields');
+
+            instBox.style.display = 'block';
+            form.style.display = 'block';
+            dynamicFields.innerHTML = "";
+
+            if(method === 'MonCash') {
+                instDetails.innerHTML = `
+                    <p>Faites le transfert MonCash vers ce numéro :</p>
+                    <div class="copy-val"><span>+50939442808</span><i class="fa-regular fa-copy"></i></div>
+                    <p style="margin-top:10px;">Propriétaire : <strong>Marco Bien-Aimé</strong></p>
+                    <p>Minimum : <strong>150 HTG</strong> | Délai : <strong>10-30 min</strong></p>
+                `;
+                dynamicFields.innerHTML = `
+                    <div class="input-group"><label>Nom Complet (Expéditeur)</label><input type="text" id="sender-name" placeholder="Votre nom complet" required></div>
+                    <div class="input-group"><label>Numéro MonCash utilisé</label><input type="tel" id="sender-info" placeholder="+509" required></div>
+                `;
+            } else if(method === 'NatCash') {
+                instDetails.innerHTML = `
+                    <p>Faites le transfert NatCash vers ce numéro :</p>
+                    <div class="copy-val"><span>+50935741778</span><i class="fa-regular fa-copy"></i></div>
+                    <p style="margin-top:10px;">Propriétaire : <strong>Marco Bien-Aimé</strong></p>
+                    <p>Minimum : <strong>150 HTG</strong> | Délai : <strong>10-30 min</strong></p>
+                `;
+                dynamicFields.innerHTML = `
+                    <div class="input-group"><label>Nom Complet (Expéditeur)</label><input type="text" id="sender-name" placeholder="Votre nom complet" required></div>
+                    <div class="input-group"><label>Numéro NatCash utilisé</label><input type="tel" id="sender-info" placeholder="+509" required></div>
+                `;
+            } else if(method === 'USDT') {
+                instDetails.innerHTML = `
+                    <p>Envoyez les USDT (Réseau <strong>TRC20</strong>) :</p>
+                    <div class="copy-val" style="font-size:0.7rem;"><span>TJHVCbXMBQdtzurHngB1aXSFkR9TWYvZ94</span><i class="fa-regular fa-copy"></i></div>
+                    <p style="margin-top:10px;">Minimum : <strong>Équivalent 150 HTG</strong></p>
+                `;
+                dynamicFields.innerHTML = `
+                    <div class="input-group"><label>Portefeuille (Ex: Binance, Trust)</label><input type="text" id="sender-name" placeholder="Nom de l'app utilisée" required></div>
+                    <div class="input-group"><label>Votre adresse USDT (Départ)</label><input type="text" id="sender-info" placeholder="Adresse du portefeuille" required></div>
+                `;
+            }
+        }
+
+        function handleFile(input) {
+            const fileName = input.files[0] ? input.files[0].name : "Cliquez pour ajouter l'image";
+            document.getElementById('file-name').innerText = fileName;
+        }
+
+        // SOUMISSION FINALE
+        document.getElementById('payment-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const loader = document.getElementById('global-loader');
+            const file = document.getElementById('proof-file').files[0];
+            const senderName = document.getElementById('sender-name').value;
+            const senderInfo = document.getElementById('sender-info').value;
+            const amountSent = document.getElementById('amount-sent').value;
+
+            loader.style.display = 'flex';
+
+            try {
+                // 1. Upload de l'image
+                const storageRef = storage.ref(`preuves/${Date.now()}_${file.name}`);
+                const snapshot = await storageRef.put(file);
+                const downloadURL = await snapshot.ref.getDownloadURL();
+
+                // 2. Création de la commande dans Firestore
+                const user = auth.currentUser;
+                await db.collection('commandes').add({
+                    userId: user ? user.uid : "Invite",
+                    userEmail: user ? user.email : "Inconnu",
+                    service: pendingOrder.service,
+                    produit: pendingOrder.item || (pendingOrder.amountUSD + " USD"),
+                    detailsDestinataire: pendingOrder.beneficiary || pendingOrder.playerID || pendingOrder.netflixEmail,
+                    methodePaiement: selectedPaymentMethod,
+                    nomExpediteur: senderName,
+                    infoExpediteur: senderInfo,
+                    montantPaye: amountSent,
+                    preuveUrl: downloadURL,
+                    statut: "En attente",
+                    date: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // 3. Succès
+                localStorage.removeItem('pendingOrder');
+                alert("✓ Commande soumise avec succès ! Elle sera validée par l'administrateur sous peu.");
+                window.location.href = "home.html";
+
+            } catch (error) {
+                console.error(error);
+                alert("Erreur lors de la soumission [ ✗ ] : " + error.message);
+                loader.style.display = 'none';
+            }
+        });
+
+    </script>
+</body>
+</html>

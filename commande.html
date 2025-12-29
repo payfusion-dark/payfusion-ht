@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mes Commandes | PAY FUSION</title>
+    
+    <!-- POLICE INTER -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- ICONS EXTERNES (FONTAWESOME) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* =========================================
+           SYSTÈME DE DESIGN GOLD MÉTALLIQUE
+           ========================================= */
+        :root {
+            --gold-gradient: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --gold-solid: #D4AF37;
+            --black: #000000;
+            --black-soft: #0A0A0A;
+            --black-card: #111111;
+            --white: #F8F8F8;
+            --gray-text: #888888;
+            --border: #1A1A1A;
+            --success: #10b981;
+            --error: #ef4444;
+            --font-size-base: 0.875rem; /* 14px */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--font-size-base);
+            color: var(--white);
+            background-color: var(--black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           HEADER FIXE
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            z-index: 1000;
+        }
+
+        .header-left i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
+        .header-center img { height: 30px; object-fit: contain; }
+        .header-right i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
+
+        /* DROPDOWN NAVIGATION */
+        #main-dropdown {
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.98);
+            border-bottom: 1px solid var(--gold-solid);
+            z-index: 999;
+            padding: 100px 5% 40px;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        #main-dropdown.show { top: 0; }
+        .dropdown-item {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--white);
+        }
+        .dropdown-item i { display: block; font-size: 1.2rem; margin-bottom: 8px; color: var(--gold-solid); }
+        .dropdown-item span { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; }
+
+        /* =========================================
+           CONTENU PRINCIPAL
+           ========================================= */
+        main { padding: 100px 5% 40px; max-width: 800px; margin: 0 auto; }
+
+        .page-header { text-align: center; margin-bottom: 40px; }
+        .page-header h1 { 
+            font-size: 1.4rem; 
+            text-transform: uppercase; 
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .page-header p { color: var(--gray-text); font-size: 0.8rem; }
+
+        /* FILTRES */
+        .filter-tabs {
+            display: flex;
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin-bottom: 30px;
+            padding: 5px;
+        }
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--gray-text);
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        .tab i { font-size: 1rem; }
+        .tab.active { 
+            background: rgba(184, 134, 11, 0.1); 
+            color: var(--gold-solid); 
+            border-radius: 2px;
+        }
+
+        /* LISTE DES COMMANDES */
+        .order-card {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+        .order-card:hover { border-color: var(--gold-solid); }
+
+        .order-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+        }
+        .order-meta h4 { font-size: 0.9rem; text-transform: uppercase; margin-bottom: 2px; }
+        .order-meta span { font-size: 0.7rem; color: var(--gray-text); }
+        
+        .order-status {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 2px;
+            letter-spacing: 1px;
+        }
+        .status-attente { background: rgba(184, 134, 11, 0.1); color: var(--gold-solid); }
+        .status-livre { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .status-annule { background: rgba(239, 68, 68, 0.1); color: var(--error); }
+
+        .order-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .detail-item span { display: block; font-size: 0.65rem; color: var(--gray-text); text-transform: uppercase; margin-bottom: 2px; }
+        .detail-item p { font-size: 0.8rem; font-weight: 600; color: var(--white); }
+
+        .order-footer {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .order-price { font-size: 1rem; font-weight: 800; color: var(--gold-solid); }
+        .btn-support {
+            font-size: 0.7rem;
+            color: var(--gray-text);
+            text-decoration: underline;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray-text);
+        }
+        .empty-state i { font-size: 3rem; color: var(--border); margin-bottom: 20px; display: block; }
+        .empty-state p { font-size: 0.85rem; }
+
+    </style>
+</head>
+<body>
+
+    <!-- DROPDOWN NAVIGATION -->
+    <div id="main-dropdown">
+        <a href="home.html" class="dropdown-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+        <a href="services.html" class="dropdown-item"><i class="fa-solid fa-wallet"></i><span>Finances</span></a>
+        <a href="freefire.html" class="dropdown-item"><i class="fa-solid fa-gamepad"></i><span>Gaming</span></a>
+        <a href="netflix.html" class="dropdown-item"><i class="fa-solid fa-tv"></i><span>Streaming</span></a>
+        <a href="account.html" class="dropdown-item"><i class="fa-solid fa-user-gear"></i><span>Profil</span></a>
+        <a href="support.html" class="dropdown-item"><i class="fa-solid fa-headset"></i><span>Support</span></a>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <a href="home.html"><i class="fa-solid fa-arrow-left"></i></a>
+        </div>
+        <div class="header-center">
+            <img src="assets/logos/payfusion-logo.svg" alt="PAYFUSION">
+        </div>
+        <div class="header-right" id="burger-trigger">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </div>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h1>Suivi des Commandes</h1>
+            <p>Historique et statut de vos transactions en temps réel</p>
+        </div>
+
+        <!-- TABS DE FILTRAGE -->
+        <div class="filter-tabs">
+            <div class="tab active" onclick="filterOrders('Toutes', this)">
+                <i class="fa-solid fa-border-all"></i>
+                Toutes
+            </div>
+            <div class="tab" onclick="filterOrders('En attente', this)">
+                <i class="fa-solid fa-hourglass-half"></i>
+                En cours
+            </div>
+            <div class="tab" onclick="filterOrders('Livré', this)">
+                <i class="fa-solid fa-check-double"></i>
+                Livrées
+            </div>
+        </div>
+
+        <!-- LISTE DES COMMANDES -->
+        <div id="orders-container">
+            <div class="empty-state">
+                <i class="fa-solid fa-receipt"></i>
+                <p>Chargement de vos commandes...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- FIREBASE SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+        apiKey: "AIzaSyAV3RoOAL4XgGQSGnEU0_Q1q5UcEce4LBg",
+        authDomain: "pay-fusion-d0eaf.firebaseapp.com",
+        projectId: "pay-fusion-d0eaf",
+        storageBucket: "pay-fusion-d0eaf.firebasestorage.app",
+        messagingSenderId: "713035702480",
+        appId: "1:713035702480:web:d05998b07c529ec2043ed5"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const burger = document.getElementById('burger-trigger');
+        const dropdown = document.getElementById('main-dropdown');
+        let allOrders = [];
+
+        // Menu Dropdown
+        burger.addEventListener('click', () => dropdown.classList.toggle('show'));
+
+        // Vérifier Auth et charger données
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                fetchOrders(user.uid);
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+        function fetchOrders(uid) {
+            db.collection('commandes')
+                .where('userId', '==', uid)
+                .orderBy('date', 'desc')
+                .onSnapshot(snapshot => {
+                    allOrders = [];
+                    snapshot.forEach(doc => {
+                        allOrders.push({ id: doc.id, ...doc.data() });
+                    });
+                    renderOrders(allOrders);
+                });
+        }
+
+        function renderOrders(orders) {
+            const container = document.getElementById('orders-container');
+            if (orders.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-receipt"></i>
+                        <p>Aucune commande trouvée ●</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = "";
+            orders.forEach(order => {
+                const dateStr = order.date ? order.date.toDate().toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : "...";
+                const statusClass = order.statut === 'En attente' ? 'status-attente' : (order.statut === 'Livré' ? 'status-livre' : 'status-annule');
+                
+                const card = `
+                    <div class="order-card">
+                        <div class="order-top">
+                            <div class="order-meta">
+                                <h4>${order.service}</h4>
+                                <span>Commande du ${dateStr}</span>
+                            </div>
+                            <div class="order-status ${statusClass}">${order.statut}</div>
+                        </div>
+                        <div class="order-details">
+                            <div class="detail-item">
+                                <span>Produit</span>
+                                <p>${order.produit || "Recharge"}</p>
+                            </div>
+                            <div class="detail-item">
+                                <span>Méthode</span>
+                                <p>${order.methodePaiement || "MonCash"}</p>
+                            </div>
+                            <div class="detail-item">
+                                <span>ID/Destinataire</span>
+                                <p>${order.detailsDestinataire || "N/A"}</p>
+                            </div>
+                            <div class="detail-item">
+                                <span>Référence</span>
+                                <p>#${order.id.substring(0, 8)}</p>
+                            </div>
+                        </div>
+                        <div class="order-footer">
+                            <div class="order-price">${parseFloat(order.montantPaye).toLocaleString()} HTG</div>
+                            <a href="https://wa.me/50939442808" class="btn-support">Aide ✓</a>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        function filterOrders(status, element) {
+            // UI Update
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+
+            // Logic
+            if (status === 'Toutes') {
+                renderOrders(allOrders);
+            } else {
+                const filtered = allOrders.filter(o => o.statut === status);
+                renderOrders(filtered);
+            }
+        }
+
+    </script>
+</body>
+</html>

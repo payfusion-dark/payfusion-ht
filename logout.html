@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Déconnexion | PAY FUSION</title>
+    
+    <!-- POLICE INTER -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- ICONS EXTERNES (FONTAWESOME) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* =========================================
+           SYSTÈME DE DESIGN GOLD MÉTALLIQUE
+           ========================================= */
+        :root {
+            --gold-gradient: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --gold-solid: #D4AF37;
+            --black: #000000;
+            --black-soft: #0A0A0A;
+            --black-card: #111111;
+            --white: #F8F8F8;
+            --gray-text: #888888;
+            --border: #1A1A1A;
+            --font-size-base: 0.875rem; /* 14px */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--font-size-base);
+            color: var(--white);
+            background-color: var(--black);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .logout-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px 20px;
+        }
+
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            background: rgba(184, 134, 11, 0.1);
+            border: 1px solid var(--gold-solid);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 2rem;
+            color: var(--gold-solid);
+            position: relative;
+        }
+
+        /* ANIMATION DU LOADER */
+        .loader-ring {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px solid transparent;
+            border-top: 2px solid var(--gold-solid);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        p {
+            color: var(--gray-text);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-ascii {
+            margin-top: 40px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #333;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="logout-container">
+        <div class="icon-box">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <div class="loader-ring"></div>
+        </div>
+
+        <h1>Déconnexion</h1>
+        <p id="status-text">Fermeture de session sécurisée...</p>
+
+        <div class="status-ascii">
+            PAY FUSION ● TERMINAL CLOUD ● 2025
+        </div>
+    </div>
+
+    <!-- FIREBASE SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+        apiKey: "AIzaSyAV3RoOAL4XgGQSGnEU0_Q1q5UcEce4LBg",
+        authDomain: "pay-fusion-d0eaf.firebaseapp.com",
+        projectId: "pay-fusion-d0eaf",
+        storageBucket: "pay-fusion-d0eaf.firebasestorage.app",
+        messagingSenderId: "713035702480",
+        appId: "1:713035702480:web:d05998b07c529ec2043ed5"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // LOGIQUE DE DÉCONNEXION
+        window.onload = function() {
+            setTimeout(() => {
+                // 1. Sign out de Firebase
+                auth.signOut().then(() => {
+                    // 2. Nettoyer le stockage local
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    
+                    document.getElementById('status-text').innerText = "Session fermée avec succès ✓";
+                    
+                    // 3. Rediriger vers la connexion
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 1000);
+                }).catch((error) => {
+                    console.error("Erreur déconnexion:", error);
+                    window.location.href = "login.html";
+                });
+            }, 1500); // Délai visuel pour le professionnalisme
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Notifications | PAY FUSION</title>
+    
+    <!-- POLICE INTER -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- ICONS EXTERNES (FONTAWESOME) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* =========================================
+           SYSTÈME DE DESIGN GOLD MÉTALLIQUE
+           ========================================= */
+        :root {
+            --gold-gradient: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --gold-solid: #D4AF37;
+            --black: #000000;
+            --black-soft: #0A0A0A;
+            --black-card: #111111;
+            --white: #F8F8F8;
+            --gray-text: #888888;
+            --border: #1A1A1A;
+            --font-size-base: 0.875rem; /* 14px */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--font-size-base);
+            color: var(--white);
+            background-color: var(--black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           HEADER FIXE
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            z-index: 1000;
+        }
+
+        .header-left i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
+        .header-center img { height: 30px; object-fit: contain; }
+        .header-right i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
+
+        /* DROPDOWN NAVIGATION */
+        #main-dropdown {
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.98);
+            border-bottom: 1px solid var(--gold-solid);
+            z-index: 999;
+            padding: 100px 5% 40px;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        #main-dropdown.show { top: 0; }
+        .dropdown-item {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--white);
+        }
+        .dropdown-item i { display: block; font-size: 1.2rem; margin-bottom: 8px; color: var(--gold-solid); }
+        .dropdown-item span { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; }
+
+        /* =========================================
+           CONTENU PRINCIPAL
+           ========================================= */
+        main { padding: 100px 5% 40px; max-width: 600px; margin: 0 auto; }
+
+        .page-header { text-align: center; margin-bottom: 35px; }
+        .page-header h1 { 
+            font-size: 1.4rem; 
+            text-transform: uppercase; 
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .page-header p { color: var(--gray-text); font-size: 0.8rem; }
+
+        /* FILTRES ET ACTIONS */
+        .notif-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 5px;
+        }
+        .notif-count { font-size: 0.75rem; font-weight: 700; color: var(--gold-solid); text-transform: uppercase; }
+        .btn-clear { background: transparent; border: none; color: var(--gray-text); font-size: 0.7rem; text-transform: uppercase; font-weight: 600; cursor: pointer; }
+
+        /* LISTE DES NOTIFICATIONS */
+        .notif-card {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 15px;
+            position: relative;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .notif-card:hover { border-color: var(--gold-solid); }
+        .notif-card.unread { border-left: 3px solid var(--gold-solid); background: rgba(184, 134, 11, 0.02); }
+
+        .notif-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--black-soft);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: var(--gold-solid);
+            flex-shrink: 0;
+        }
+
+        .notif-content { flex: 1; }
+        .notif-content h3 { font-size: 0.9rem; margin-bottom: 5px; font-weight: 700; color: var(--white); }
+        .notif-content p { font-size: 0.8rem; color: var(--gray-text); line-height: 1.4; margin-bottom: 8px; }
+        .notif-time { font-size: 0.65rem; color: #444; font-weight: 700; text-transform: uppercase; }
+
+        .unread-dot {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 8px;
+            height: 8px;
+            background: var(--gold-solid);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--gold-solid);
+        }
+
+        /* EMPTY STATE */
+        .empty-notif {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--gray-text);
+        }
+        .empty-notif i { font-size: 3rem; color: var(--border); margin-bottom: 20px; display: block; }
+        .empty-notif p { font-size: 0.85rem; letter-spacing: 1px; }
+
+    </style>
+</head>
+<body>
+
+    <!-- DROPDOWN NAVIGATION -->
+    <div id="main-dropdown">
+        <a href="home.html" class="dropdown-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+        <a href="services.html" class="dropdown-item"><i class="fa-solid fa-wallet"></i><span>Finances</span></a>
+        <a href="freefire.html" class="dropdown-item"><i class="fa-solid fa-gamepad"></i><span>Gaming</span></a>
+        <a href="netflix.html" class="dropdown-item"><i class="fa-solid fa-tv"></i><span>Streaming</span></a>
+        <a href="commande.html" class="dropdown-item"><i class="fa-solid fa-receipt"></i><span>Commandes</span></a>
+        <a href="account.html" class="dropdown-item"><i class="fa-solid fa-user-gear"></i><span>Profil</span></a>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <a href="home.html"><i class="fa-solid fa-arrow-left"></i></a>
+        </div>
+        <div class="header-center">
+            <img src="assets/logos/payfusion-logo.svg" alt="PAYFUSION">
+        </div>
+        <div class="header-right" id="burger-trigger">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </div>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h1>Centre de Notifications</h1>
+            <p>Restez informé sur l'activité de votre compte</p>
+        </div>
+
+        <div class="notif-actions">
+            <div class="notif-count" id="notif-count-text">0 Notification(s)</div>
+            <button class="btn-clear" onclick="markAllAsRead()">Tout marquer comme lu ✓</button>
+        </div>
+
+        <!-- LISTE DES NOTIFICATIONS -->
+        <div id="notifications-container">
+            <!-- État de chargement initial -->
+            <div class="empty-notif">
+                <i class="fa-solid fa-bell-slash"></i>
+                <p>Chargement des notifications en cours...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- FIREBASE SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+        apiKey: "AIzaSyAV3RoOAL4XgGQSGnEU0_Q1q5UcEce4LBg",
+        authDomain: "pay-fusion-d0eaf.firebaseapp.com",
+        projectId: "pay-fusion-d0eaf",
+        storageBucket: "pay-fusion-d0eaf.firebasestorage.app",
+        messagingSenderId: "713035702480",
+        appId: "1:713035702480:web:d05998b07c529ec2043ed5"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const burger = document.getElementById('burger-trigger');
+        const dropdown = document.getElementById('main-dropdown');
+        const container = document.getElementById('notifications-container');
+        const countText = document.getElementById('notif-count-text');
+
+        // Menu Dropdown
+        burger.addEventListener('click', () => dropdown.classList.toggle('show'));
+
+        // Vérifier Auth et charger notifications
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                fetchNotifications(user.uid);
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+        function fetchNotifications(uid) {
+            db.collection('notifications')
+                .where('userId', '==', uid)
+                .orderBy('timestamp', 'desc')
+                .onSnapshot(snapshot => {
+                    if (snapshot.empty) {
+                        container.innerHTML = `
+                            <div class="empty-notif">
+                                <i class="fa-solid fa-bell-slash"></i>
+                                <p>Aucune notification pour le moment ●</p>
+                            </div>
+                        `;
+                        countText.innerText = "0 Notification";
+                        return;
+                    }
+
+                    let unreadCount = 0;
+                    container.innerHTML = "";
+                    
+                    snapshot.forEach(doc => {
+                        const notif = doc.data();
+                        if (!notif.isRead) unreadCount++;
+                        
+                        const time = notif.timestamp ? formatTime(notif.timestamp.toDate()) : "À l'instant";
+                        const card = document.createElement('div');
+                        card.className = `notif-card ${!notif.isRead ? 'unread' : ''}`;
+                        card.onclick = () => markAsRead(doc.id, notif.isRead);
+                        
+                        card.innerHTML = `
+                            <div class="notif-icon">
+                                <i class="${getIcon(notif.type)}"></i>
+                            </div>
+                            <div class="notif-content">
+                                <h3>${notif.title}</h3>
+                                <p>${notif.message}</p>
+                                <div class="notif-time">${time}</div>
+                            </div>
+                            ${!notif.isRead ? '<div class="unread-dot"></div>' : ''}
+                        `;
+                        container.appendChild(card);
+                    });
+
+                    countText.innerText = `${snapshot.size} Notification(s) (${unreadCount} non lue(s))`;
+                });
+        }
+
+        function getIcon(type) {
+            switch(type) {
+                case 'order': return 'fa-solid fa-cart-shopping';
+                case 'payment': return 'fa-solid fa-wallet';
+                case 'system': return 'fa-solid fa-gears';
+                default: return 'fa-solid fa-bell';
+            }
+        }
+
+        function formatTime(date) {
+            const now = new Date();
+            const diff = Math.floor((now - date) / 1000); // secondes
+
+            if (diff < 60) return "À l'instant";
+            if (diff < 3600) return `Il y a ${Math.floor(diff / 60)} min`;
+            if (diff < 86400) return `Il y a ${Math.floor(diff / 3600)} h`;
+            return date.toLocaleDateString();
+        }
+
+        function markAsRead(id, currentState) {
+            if (currentState === false) {
+                db.collection('notifications').doc(id).update({ isRead: true });
+            }
+        }
+
+        function markAllAsRead() {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            db.collection('notifications')
+                .where('userId', '==', user.uid)
+                .where('isRead', '==', false)
+                .get()
+                .then(snapshot => {
+                    const batch = db.batch();
+                    snapshot.forEach(doc => {
+                        batch.update(doc.ref, { isRead: true });
+                    });
+                    return batch.commit();
+                });
+        }
+
+    </script>
+</body>
+</html>

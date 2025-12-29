@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tableau de Bord | PAY FUSION</title>
+    
+    <!-- POLICE INTER -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- ICONS EXTERNES (FONTAWESOME) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* =========================================
+           SYSTÈME DE DESIGN GOLD MÉTALLIQUE
+           ========================================= */
+        :root {
+            --gold-gradient: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --gold-solid: #D4AF37;
+            --black: #000000;
+            --black-soft: #0A0A0A;
+            --black-card: #111111;
+            --white: #F8F8F8;
+            --gray-text: #888888;
+            --border: #1A1A1A;
+            --font-size-base: 0.875rem; /* 14px */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--font-size-base);
+            color: var(--white);
+            background-color: var(--black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           HEADER FIXE
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            z-index: 1000;
+        }
+
+        .header-left { width: 40px; }
+        .header-center img { height: 30px; object-fit: contain; }
+        .header-right { 
+            width: 40px; 
+            text-align: right; 
+            color: var(--gold-solid); 
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        /* =========================================
+           SIDEBAR DROPDOWN (MOBILE & DESKTOP)
+           ========================================= */
+        #sidebar {
+            position: fixed;
+            top: 70px;
+            right: -100%;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: var(--black-soft);
+            border-left: 1px solid var(--border);
+            z-index: 999;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        #sidebar.active { right: 0; }
+
+        .user-profile-side {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .user-profile-side h4 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--white);
+        }
+
+        .user-profile-side p {
+            font-size: 0.75rem;
+            color: var(--gray-text);
+        }
+
+        .side-section-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--gold-solid);
+            letter-spacing: 2px;
+            margin: 25px 0 15px;
+            font-weight: 700;
+        }
+
+        .side-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 0;
+            color: var(--white);
+            text-decoration: none;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .side-link i {
+            width: 20px;
+            color: var(--gold-solid);
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .side-link:hover { padding-left: 10px; color: var(--gold-solid); }
+
+        /* =========================================
+           CONTENU PRINCIPAL
+           ========================================= */
+        main {
+            padding: 100px 5% 40px;
+        }
+
+        /* CARTE SOLDE */
+        .balance-card {
+            background: var(--gold-gradient);
+            color: var(--black);
+            padding: 30px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(179, 135, 40, 0.3);
+        }
+
+        .balance-card::after {
+            content: "\f51e";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            font-size: 8rem;
+            opacity: 0.1;
+        }
+
+        .balance-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .balance-amount {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .balance-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-balance {
+            background: rgba(0,0,0,0.8);
+            color: var(--gold-solid);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 2px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        /* GRILLE DE SERVICES RAPIDES */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .action-item {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            padding: 25px 15px;
+            text-align: center;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        .action-item:hover { border-color: var(--gold-solid); }
+
+        .action-item i {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .action-item span {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ACTIVITÉ RÉCENTE */
+        .recent-section h3 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .recent-section h3 i { color: var(--gold-solid); }
+
+        .activity-list {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .activity-item {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .activity-item:last-child { border-bottom: none; }
+
+        .act-info h5 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .act-info p {
+            font-size: 0.7rem;
+            color: var(--gray-text);
+        }
+
+        .act-status {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 2px;
+        }
+
+        .status-pending { background: rgba(179, 135, 40, 0.1); color: var(--gold-solid); }
+        .status-success { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+
+        /* OVERLAY FLOU */
+        #overlay-blur {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 998;
+            display: none;
+        }
+
+        #overlay-blur.active { display: block; }
+
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <i class="fa-solid fa-bell" style="color: var(--gold-solid);"></i>
+        </div>
+        <div class="header-center">
+            <img src="assets/logos/payfusion-logo.png" alt="PAYFUSION">
+        </div>
+        <div class="header-right" id="burger-menu">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <div id="overlay-blur"></div>
+    <div id="sidebar">
+        <div class="user-profile-side">
+            <div class="user-avatar" id="avatar-initial">U</div>
+            <h4 id="side-username">Chargement...</h4>
+            <p id="side-email">...</p>
+        </div>
+
+        <div class="side-section-title">SECTION ACCUEIL</div>
+        <a href="freefire.html" class="side-link"><i class="fa-solid fa-gamepad"></i> Recharge Jeux</a>
+        <a href="netflix.html" class="side-link"><i class="fa-solid fa-tv"></i> Streaming</a>
+        <a href="services.html" class="side-link"><i class="fa-solid fa-landmark"></i> Services Financiers</a>
+        <a href="#" class="side-link"><i class="fa-solid fa-ticket"></i> Cartes Cadeaux</a>
+        <a href="commande.html" class="side-link"><i class="fa-solid fa-list-ul"></i> Commandes</a>
+        <a href="account.html" class="side-link"><i class="fa-solid fa-user-gear"></i> Profil</a>
+        <a href="settings.html" class="side-link"><i class="fa-solid fa-gear"></i> Paramètres</a>
+
+        <div class="side-section-title">SECTION AIDE ET SOUTIEN</div>
+        <a href="https://wa.me/50939442808" class="side-link"><i class="fa-brands fa-whatsapp"></i> Canal WhatsApp</a>
+        <a href="#" class="side-link" id="logout-btn" style="color: #ef4444;"><i class="fa-solid fa-right-from-bracket" style="color: #ef4444;"></i> Se Déconnecter</a>
+    </div>
+
+    <main>
+        <!-- CARTE SOLDE -->
+        <div class="balance-card">
+            <div class="balance-label">Mon Solde Actuel</div>
+            <div class="balance-amount"><span id="user-balance">0.00</span> HTG</div>
+            <div class="balance-actions">
+                <button class="btn-balance" onclick="window.location.href='payment.html'">Recharger +</button>
+                <button class="btn-balance" style="background: transparent; border: 1px solid var(--black);">Retrait</button>
+            </div>
+        </div>
+
+        <!-- ACTIONS RAPIDES -->
+        <div class="quick-actions">
+            <div class="action-item" onclick="window.location.href='freefire.html'">
+                <i class="fa-solid fa-fire"></i>
+                <span>Free Fire</span>
+            </div>
+            <div class="action-item" onclick="window.location.href='netflix.html'">
+                <i class="fa-solid fa-play"></i>
+                <span>Netflix</span>
+            </div>
+            <div class="action-item" onclick="window.location.href='services.html'">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+                <span>PayPal/Wise</span>
+            </div>
+            <div class="action-item" onclick="window.location.href='payment.html'">
+                <i class="fa-solid fa-wallet"></i>
+                <span>Dépôt</span>
+            </div>
+        </div>
+
+        <!-- ACTIVITÉ RÉCENTE -->
+        <div class="recent-section">
+            <h3><i class="fa-solid fa-clock-rotate-left"></i> Activité Récente</h3>
+            <div class="activity-list" id="activity-container">
+                <div style="padding: 20px; text-align: center; color: var(--gray-text); font-size: 0.8rem;">
+                    Aucune transaction récente ✓
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FIREBASE COMPAT SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        // CONFIG FIREBASE RÉELLE
+        const firebaseConfig = {
+        apiKey: "AIzaSyAV3RoOAL4XgGQSGnEU0_Q1q5UcEce4LBg",
+        authDomain: "pay-fusion-d0eaf.firebaseapp.com",
+        projectId: "pay-fusion-d0eaf",
+        storageBucket: "pay-fusion-d0eaf.firebasestorage.app",
+        messagingSenderId: "713035702480",
+        appId: "1:713035702480:web:d05998b07c529ec2043ed5"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Gestion Sidebar
+        const burger = document.getElementById('burger-menu');
+        const sidebar = document.getElementById('sidebar');
+        const blurOverlay = document.getElementById('overlay-blur');
+
+        burger.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            blurOverlay.classList.toggle('active');
+        });
+
+        blurOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            blurOverlay.classList.remove('active');
+        });
+
+        // Charger Données Utilisateur
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                db.collection('users').doc(user.uid).onSnapshot(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        document.getElementById('side-username').innerText = data.fullName;
+                        document.getElementById('side-email').innerText = data.email;
+                        document.getElementById('user-balance').innerText = data.balance.toLocaleString();
+                        document.getElementById('avatar-initial').innerText = data.fullName.charAt(0).toUpperCase();
+                        
+                        // Charger commandes récentes
+                        loadRecentOrders(user.uid);
+                    }
+                });
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+        function loadRecentOrders(uid) {
+            db.collection('commandes')
+                .where('userId', '==', uid)
+                .orderBy('date', 'desc')
+                .limit(5)
+                .get()
+                .then(querySnapshot => {
+                    const container = document.getElementById('activity-container');
+                    if (querySnapshot.empty) return;
+
+                    container.innerHTML = "";
+                    querySnapshot.forEach(doc => {
+                        const order = doc.data();
+                        const statusClass = order.status === 'En attente' ? 'status-pending' : 'status-success';
+                        
+                        const item = `
+                            <div class="activity-item">
+                                <div class="act-info">
+                                    <h5>${order.item || order.service}</h5>
+                                    <p>${new Date(order.date).toLocaleDateString()}</p>
+                                </div>
+                                <div class="act-status ${statusClass}">${order.status}</div>
+                            </div>
+                        `;
+                        container.innerHTML += item;
+                    });
+                });
+        }
+
+        // Déconnexion
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            auth.signOut().then(() => {
+                window.location.href = "login.html";
+            });
+        });
+
+    </script>
+</body>
+</html>

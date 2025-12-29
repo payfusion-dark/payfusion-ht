@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Connexion | PAY FUSION</title>
+    
+    <!-- POLICE INTER -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- ICONS EXTERNES -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* =========================================
+           SYSTÈME DE DESIGN GOLD MÉTALLIQUE
+           ========================================= */
+        :root {
+            --gold-gradient: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --gold-solid: #D4AF37;
+            --black: #000000;
+            --black-soft: #0A0A0A;
+            --black-card: #111111;
+            --white: #F8F8F8;
+            --gray-text: #888888;
+            --border: #1A1A1A;
+            --error-red: #ef4444;
+            --font-size-base: 0.875rem; /* 14px */
+        }
+
+        /* =========================================
+           RESET & BASE
+           ========================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--font-size-base);
+            color: var(--white);
+            background-color: var(--black);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* =========================================
+           LOGIN CARD
+           ========================================= */
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            padding: 48px 32px;
+            border-radius: 4px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            color: var(--gray-text);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* =========================================
+           FORMULAIRE
+           ========================================= */
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--gold-solid);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            color: #444;
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            background: #050505;
+            border: 1px solid var(--border);
+            color: var(--white);
+            border-radius: 2px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--gold-solid);
+            background: #080808;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            margin-top: 10px;
+            background: var(--gold-gradient);
+            color: var(--black);
+            border: none;
+            border-radius: 2px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .btn-login:active {
+            transform: scale(0.98);
+        }
+
+        /* =========================================
+           UTILS
+           ========================================= */
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error-red);
+            padding: 12px;
+            font-size: 0.75rem;
+            border-radius: 2px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .login-footer {
+            margin-top: 32px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .login-footer p {
+            color: var(--gray-text);
+            margin-bottom: 15px;
+        }
+
+        .login-footer a {
+            color: var(--gold-solid);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .back-home {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: var(--gray-text);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* LOADER */
+        .loader {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--black);
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-home">
+        <i class="fa-solid fa-arrow-left"></i> Retour
+    </a>
+
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Connexion</h1>
+            <p>Accédez à votre espace Pay Fusion</p>
+        </div>
+
+        <div id="error-box" class="error-message">
+            Nom d'utilisateur ou mot de passe incorrect [ ✗ ]
+        </div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label>Adresse Email</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="email" placeholder="votre@email.com" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login" id="submit-btn">
+                <span id="btn-text">Se Connecter [ > ]</span>
+                <div class="loader" id="btn-loader"></div>
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <p><a href="#">Mot de passe oublié ?</a></p>
+            <p>Nouveau sur la plateforme ? <a href="register.html">Créer un compte [ + ]</a></p>
+        </div>
+    </div>
+
+    <!-- FIREBASE COMPAT SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    
+    <!-- CONFIG FIREBASE RÉELLE -->
+    <script>
+        const firebaseConfig = {
+        apiKey: "AIzaSyAV3RoOAL4XgGQSGnEU0_Q1q5UcEce4LBg",
+        authDomain: "pay-fusion-d0eaf.firebaseapp.com",
+        projectId: "pay-fusion-d0eaf",
+        storageBucket: "pay-fusion-d0eaf.firebasestorage.app",
+        messagingSenderId: "713035702480",
+        appId: "1:713035702480:web:d05998b07c529ec2043ed5"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Gestion du Formulaire
+        const loginForm = document.getElementById('login-form');
+        const errorBox = document.getElementById('error-box');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const btnLoader = document.getElementById('btn-loader');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // UI Loading
+            errorBox.style.display = 'none';
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'block';
+            submitBtn.disabled = true;
+
+            // Connexion Firebase
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Succès - Redirection intelligente
+                    const user = userCredential.user;
+                    
+                    // Vérification si Admin pour redirection
+                    if (user.email === "bmarcco4412@gmail.com") {
+                        window.location.href = "admin.html";
+                    } else {
+                        window.location.href = "home.html";
+                    }
+                })
+                .catch((error) => {
+                    // Erreur
+                    console.error(error.message);
+                    errorBox.innerText = "Identifiants invalides [ ✗ ]";
+                    errorBox.style.display = 'block';
+                    
+                    // Reset UI
+                    btnText.style.display = 'block';
+                    btnLoader.style.display = 'none';
+                    submitBtn.disabled = false;
+                });
+        });
+    </script>
+</body>
+</html>

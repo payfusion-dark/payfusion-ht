@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Paramètres | PAY FUSION</title>
+    
+    <!-- POLICE INTER -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- ICONS EXTERNES (FONTAWESOME) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* =========================================
+           SYSTÈME DE DESIGN GOLD MÉTALLIQUE
+           ========================================= */
+        :root {
+            --gold-gradient: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --gold-solid: #D4AF37;
+            --black: #000000;
+            --black-soft: #0A0A0A;
+            --black-card: #111111;
+            --white: #F8F8F8;
+            --gray-text: #888888;
+            --border: #1A1A1A;
+            --success: #10b981;
+            --error: #ef4444;
+            --font-size-base: 0.875rem; /* 14px */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--font-size-base);
+            color: var(--white);
+            background-color: var(--black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           HEADER FIXE
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            z-index: 1000;
+        }
+
+        .header-left i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
+        .header-center img { height: 30px; object-fit: contain; }
+        .header-right i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
+
+        /* DROPDOWN NAVIGATION */
+        #main-dropdown {
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.98);
+            border-bottom: 1px solid var(--gold-solid);
+            z-index: 999;
+            padding: 100px 5% 40px;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        #main-dropdown.show { top: 0; }
+        .dropdown-item {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--white);
+        }
+        .dropdown-item i { display: block; font-size: 1.2rem; margin-bottom: 8px; color: var(--gold-solid); }
+        .dropdown-item span { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; }
+
+        /* =========================================
+           CONTENU PRINCIPAL
+           ========================================= */
+        main { padding: 100px 5% 40px; max-width: 600px; margin: 0 auto; }
+
+        .section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--gold-solid);
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+        .section-title::after { content: ""; height: 1px; flex: 1; background: var(--border); }
+
+        .settings-box {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+
+        /* CHANGEMENT MDP */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.7rem; color: var(--gray-text); text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            background: var(--black-soft);
+            border: 1px solid var(--border);
+            color: var(--white);
+            border-radius: 2px;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .form-group input:focus { border-color: var(--gold-solid); }
+
+        .btn-action {
+            width: 100%;
+            padding: 16px;
+            background: var(--gold-gradient);
+            color: var(--black);
+            border: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        /* TOGGLE SWITCHES (PREFERENCES) */
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .setting-row:last-child { border-bottom: none; }
+        
+        .row-info h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 2px; }
+        .row-info p { font-size: 0.7rem; color: var(--gray-text); }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--border);
+            transition: .4s;
+            border-radius: 20px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px; width: 14px;
+            left: 3px; bottom: 3px;
+            background-color: var(--white);
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--gold-solid); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        /* DANGER ZONE */
+        .danger-box {
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.05);
+            padding: 25px;
+            border-radius: 4px;
+        }
+        .btn-danger {
+            width: 100%;
+            padding: 16px;
+            background: transparent;
+            color: var(--error);
+            border: 1px solid var(--error);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        /* FEEDBACK */
+        #status-msg {
+            padding: 12px;
+            border-radius: 2px;
+            font-size: 0.75rem;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+        }
+        .msg-success { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid var(--success); }
+        .msg-error { background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid var(--error); }
+
+    </style>
+</head>
+<body>
+
+    <!-- DROPDOWN NAVIGATION -->
+    <div id="main-dropdown">
+        <a href="home.html" class="dropdown-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+        <a href="services.html" class="dropdown-item"><i class="fa-solid fa-wallet"></i><span>Finances</span></a>
+        <a href="freefire.html" class="dropdown-item"><i class="fa-solid fa-gamepad"></i><span>Gaming</span></a>
+        <a href="netflix.html" class="dropdown-item"><i class="fa-solid fa-tv"></i><span>Streaming</span></a>
+        <a href="account.html" class="dropdown-item"><i class="fa-solid fa-user-gear"></i><span>Profil</span></a>
+        <a href="support.html" class="dropdown-item"><i class="fa-solid fa-headset"></i><span>Support</span></a>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <a href="home.html"><i class="fa-solid fa-arrow-left"></i></a>
+        </div>
+        <div class="header-center">
+            <img src="assets/logos/payfusion-logo.svg" alt="PAYFUSION">
+        </div>
+        <div class="header-right" id="burger-trigger">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </div>
+    </header>
+
+    <main>
+        <h3 class="section-title"><i class="fa-solid fa-shield-halved"></i> Sécurité du compte</h3>
+        <div class="settings-box">
+            <div id="status-msg"></div>
+            
+            <form id="password-form">
+                <div class="form-group">
+                    <label>Nouveau mot de passe</label>
+                    <input type="password" id="new-password" placeholder="Min. 6 caractères" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirmer le mot de passe</label>
+                    <input type="password" id="confirm-password" placeholder="Répéter le mot de passe" required>
+                </div>
+                <button type="submit" class="btn-action">Mettre à jour le mot de passe ✓</button>
+            </form>
+        </div>
+
+        <h3 class="section-title"><i class="fa-solid fa-bell"></i> Préférences</h3>
+        <div class="settings-box">
+            <div class="setting-row">
+                <div class="row-info">
+                    <h4>Notifications push</h4>
+                    <p>Alertes sur le statut des commandes</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting-row">
+                <div class="row-info">
+                    <h4>Email Marketing</h4>
+                    <p>Nouveaux produits et promotions</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting-row">
+                <div class="row-info">
+                    <h4>Sécurité renforcée</h4>
+                    <p>Journal de connexion actif</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <h3 class="section-title"><i class="fa-solid fa-triangle-exclamation"></i> Zone de danger</h3>
+        <div class="danger-box">
+            <p style="font-size: 0.75rem; color: var(--gray-text); margin-bottom: 20px;">
+                La déconnexion fermera votre session sur cet appareil. Pour supprimer définitivement votre compte, contactez le support technique.
+            </p>
+            <button class="btn-danger" id="logout-trigger">Se déconnecter de PAY FUSION —</button>
+        </div>
+    </main>
+
+    <!-- FIREBASE SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+        apiKey: "AIzaSyAV3RoOAL4XgGQSGnEU0_Q1q5UcEce4LBg",
+        authDomain: "pay-fusion-d0eaf.firebaseapp.com",
+        projectId: "pay-fusion-d0eaf",
+        storageBucket: "pay-fusion-d0eaf.firebasestorage.app",
+        messagingSenderId: "713035702480",
+        appId: "1:713035702480:web:d05998b07c529ec2043ed5"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        const burger = document.getElementById('burger-trigger');
+        const dropdown = document.getElementById('main-dropdown');
+
+        // Menu Dropdown
+        burger.addEventListener('click', () => dropdown.classList.toggle('show'));
+
+        // Sécurité Auth
+        auth.onAuthStateChanged(user => {
+            if (!user) window.location.href = "login.html";
+        });
+
+        // Changement de mot de passe
+        document.getElementById('password-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newPass = document.getElementById('new-password').value;
+            const confirmPass = document.getElementById('confirm-password').value;
+            const msgBox = document.getElementById('status-msg');
+
+            if(newPass !== confirmPass) {
+                showMsg("Les mots de passe ne correspondent pas ●", "error");
+                return;
+            }
+
+            if(newPass.length < 6) {
+                showMsg("Minimum 6 caractères requis ●", "error");
+                return;
+            }
+
+            const user = auth.currentUser;
+            user.updatePassword(newPass).then(() => {
+                showMsg("Mot de passe mis à jour avec succès ✓", "success");
+                this.reset();
+            }).catch(error => {
+                showMsg("Erreur : Veuillez vous reconnecter avant de changer le mot de passe ●", "error");
+            });
+        });
+
+        function showMsg(text, type) {
+            const msgBox = document.getElementById('status-msg');
+            msgBox.innerText = text;
+            msgBox.className = type === "success" ? "msg-success" : "msg-error";
+            msgBox.style.display = "block";
+            setTimeout(() => msgBox.style.display = "none", 5000);
+        }
+
+        // Déconnexion
+        document.getElementById('logout-trigger').addEventListener('click', () => {
+            if(confirm("Voulez-vous vraiment vous déconnecter ? —")) {
+                auth.signOut().then(() => {
+                    window.location.href = "login.html";
+                });
+            }
+        });
+    </script>
+</body>
+</html>

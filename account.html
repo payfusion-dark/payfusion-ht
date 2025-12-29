@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mon Profil | PAY FUSION</title>
+    
+    <!-- POLICE INTER -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- ICONS EXTERNES (FONTAWESOME) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* =========================================
+           SYSTÈME DE DESIGN GOLD MÉTALLIQUE
+           ========================================= */
+        :root {
+            --gold-gradient: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --gold-solid: #D4AF37;
+            --black: #000000;
+            --black-soft: #0A0A0A;
+            --black-card: #111111;
+            --white: #F8F8F8;
+            --gray-text: #888888;
+            --border: #1A1A1A;
+            --success: #10b981;
+            --font-size-base: 0.875rem; /* 14px */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--font-size-base);
+            color: var(--white);
+            background-color: var(--black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           HEADER FIXE
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            z-index: 1000;
+        }
+
+        .header-left i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
+        .header-center img { height: 30px; object-fit: contain; }
+        .header-right i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
+
+        /* DROPDOWN NAVIGATION */
+        #main-dropdown {
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.98);
+            border-bottom: 1px solid var(--gold-solid);
+            z-index: 999;
+            padding: 100px 5% 40px;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        #main-dropdown.show { top: 0; }
+        .dropdown-item {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--white);
+        }
+        .dropdown-item i { display: block; font-size: 1.2rem; margin-bottom: 8px; color: var(--gold-solid); }
+        .dropdown-item span { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; }
+
+        /* =========================================
+           CONTENU PRINCIPAL
+           ========================================= */
+        main { padding: 100px 5% 40px; max-width: 600px; margin: 0 auto; }
+
+        /* USER PROFILE CARD */
+        .profile-hero {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+        .avatar-large {
+            width: 80px;
+            height: 80px;
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+            font-size: 2rem;
+            font-weight: 800;
+        }
+        .profile-hero h2 { font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .profile-hero p { color: var(--gray-text); font-size: 0.8rem; margin-bottom: 20px; }
+        
+        .balance-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(184, 134, 11, 0.1);
+            border: 1px solid var(--gold-solid);
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: var(--gold-solid);
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        /* ACTIONS / FORM */
+        .settings-section { margin-bottom: 40px; }
+        .section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--gold-solid);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title::after { content: ""; height: 1px; flex: 1; background: var(--border); }
+
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 0.7rem; color: var(--gray-text); text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            background: var(--black-soft);
+            border: 1px solid var(--border);
+            color: var(--white);
+            border-radius: 2px;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .input-group input:focus { border-color: var(--gold-solid); }
+
+        .btn-update {
+            width: 100%;
+            padding: 16px;
+            background: var(--gold-gradient);
+            color: var(--black);
+            border: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+        .btn-update:hover { transform: scale(1.01); }
+
+        /* HISTORY LIST */
+        .history-list {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+        .history-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .history-item:last-child { border-bottom: none; }
+        
+        .history-info h5 { font-size: 0.85rem; margin-bottom: 2px; font-weight: 600; }
+        .history-info p { font-size: 0.7rem; color: var(--gray-text); }
+        
+        .history-status {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 2px;
+        }
+        .status-attente { background: rgba(184, 134, 11, 0.1); color: var(--gold-solid); }
+        .status-livre { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+
+        /* FEEDBACK */
+        #toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--success);
+            color: var(--white);
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: none;
+            z-index: 3000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="toast">Modification enregistrée ✓</div>
+
+    <!-- DROPDOWN NAVIGATION -->
+    <div id="main-dropdown">
+        <a href="home.html" class="dropdown-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+        <a href="services.html" class="dropdown-item"><i class="fa-solid fa-wallet"></i><span>Finances</span></a>
+        <a href="freefire.html" class="dropdown-item"><i class="fa-solid fa-gamepad"></i><span>Gaming</span></a>
+        <a href="netflix.html" class="dropdown-item"><i class="fa-solid fa-tv"></i><span>Streaming</span></a>
+        <a href="commande.html" class="dropdown-item"><i class="fa-solid fa-receipt"></i><span>Commandes</span></a>
+        <a href="support.html" class="dropdown-item"><i class="fa-solid fa-headset"></i><span>Support</span></a>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <a href="home.html"><i class="fa-solid fa-arrow-left"></i></a>
+        </div>
+        <div class="header-center">
+            <img src="assets/logos/payfusion-logo.svg" alt="PAYFUSION">
+        </div>
+        <div class="header-right" id="burger-trigger">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </div>
+    </header>
+
+    <main>
+        <!-- PROFILE HERO -->
+        <div class="profile-hero">
+            <div class="avatar-large" id="user-initial">U</div>
+            <h2 id="user-display-name">Chargement...</h2>
+            <p id="user-display-email">...</p>
+            <div class="balance-pill">
+                <i class="fa-solid fa-sack-dollar"></i>
+                <span id="user-display-balance">0.00</span> HTG
+            </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div class="settings-section">
+            <h3 class="section-title"><i class="fa-solid fa-user-pen"></i> Modifier mes infos</h3>
+            <div class="input-group">
+                <label>Nom complet</label>
+                <input type="text" id="edit-name" placeholder="Nom Prénom">
+            </div>
+            <div class="input-group">
+                <label>Téléphone WhatsApp</label>
+                <input type="tel" id="edit-phone" placeholder="+509">
+            </div>
+            <button class="btn-update" onclick="updateProfile()">Mettre à jour mon profil ✓</button>
+        </div>
+
+        <!-- RECENT HISTORY -->
+        <div class="settings-section">
+            <h3 class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> Mes dernières commandes</h3>
+            <div class="history-list" id="personal-history">
+                <div style="padding: 30px; text-align: center; color: var(--gray-text); font-size: 0.8rem;">
+                    Aucune commande trouvée ●
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FIREBASE SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+        apiKey: "AIzaSyAV3RoOAL4XgGQSGnEU0_Q1q5UcEce4LBg",
+        authDomain: "pay-fusion-d0eaf.firebaseapp.com",
+        projectId: "pay-fusion-d0eaf",
+        storageBucket: "pay-fusion-d0eaf.firebasestorage.app",
+        messagingSenderId: "713035702480",
+        appId: "1:713035702480:web:d05998b07c529ec2043ed5"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const burger = document.getElementById('burger-trigger');
+        const dropdown = document.getElementById('main-dropdown');
+
+        // Menu Dropdown
+        burger.addEventListener('click', () => dropdown.classList.toggle('show'));
+
+        // Charger les données utilisateur
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                db.collection('users').doc(user.uid).onSnapshot(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        document.getElementById('user-display-name').innerText = data.fullName;
+                        document.getElementById('user-display-email').innerText = data.email;
+                        document.getElementById('user-display-balance').innerText = (data.balance || 0).toLocaleString();
+                        document.getElementById('user-initial').innerText = data.fullName.charAt(0).toUpperCase();
+                        
+                        // Remplir le formulaire
+                        document.getElementById('edit-name').value = data.fullName;
+                        document.getElementById('edit-phone').value = data.phone || "";
+                        
+                        loadUserHistory(user.uid);
+                    }
+                });
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+        // Charger l'historique personnel
+        function loadUserHistory(uid) {
+            db.collection('commandes')
+                .where('userId', '==', uid)
+                .orderBy('date', 'desc')
+                .limit(10)
+                .get()
+                .then(snap => {
+                    const list = document.getElementById('personal-history');
+                    if(snap.empty) return;
+
+                    list.innerHTML = "";
+                    snap.forEach(doc => {
+                        const order = doc.data();
+                        const statusClass = order.statut === 'En attente' ? 'status-attente' : 'status-livre';
+                        const dateStr = order.date ? order.date.toDate().toLocaleDateString() : "...";
+                        
+                        list.innerHTML += `
+                            <div class="history-item">
+                                <div class="history-info">
+                                    <h5>${order.service}</h5>
+                                    <p>${order.produit || "Achat"} — ${dateStr}</p>
+                                </div>
+                                <div class="history-status ${statusClass}">${order.statut}</div>
+                            </div>
+                        `;
+                    });
+                });
+        }
+
+        // Mettre à jour le profil
+        function updateProfile() {
+            const user = auth.currentUser;
+            const newName = document.getElementById('edit-name').value;
+            const newPhone = document.getElementById('edit-phone').value;
+
+            if(!newName || !newPhone) return alert("Champs obligatoires ●");
+
+            db.collection('users').doc(user.uid).update({
+                fullName: newName,
+                phone: newPhone
+            }).then(() => {
+                const toast = document.getElementById('toast');
+                toast.style.display = "block";
+                setTimeout(() => toast.style.display = "none", 3000);
+            });
+        }
+    </script>
+</body>
+</html>

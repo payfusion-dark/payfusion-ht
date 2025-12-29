@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Free Fire Boutique | PAY FUSION</title>
+    
+    <!-- POLICE INTER -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- ICONS EXTERNES (FONTAWESOME) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* =========================================
+           SYSTÈME DE DESIGN GOLD MÉTALLIQUE
+           ========================================= */
+        :root {
+            --gold-gradient: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --gold-solid: #D4AF37;
+            --black: #000000;
+            --black-soft: #0A0A0A;
+            --black-card: #111111;
+            --white: #F8F8F8;
+            --gray-text: #888888;
+            --border: #1A1A1A;
+            --orange-ff: #f97316;
+            --font-size-base: 0.875rem; /* 14px */
+        }
+
+        /* =========================================
+           RESET & BASE
+           ========================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--font-size-base);
+            color: var(--white);
+            background-color: var(--black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           HEADER FIXE
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            z-index: 1000;
+        }
+
+        .header-left i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
+        .header-center img { height: 30px; object-fit: contain; }
+        .header-right i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
+
+        /* DROPDOWN NAVIGATION */
+        #main-dropdown {
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.98);
+            border-bottom: 1px solid var(--gold-solid);
+            z-index: 999;
+            padding: 100px 5% 40px;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        #main-dropdown.show { top: 0; }
+        .dropdown-item {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--white);
+        }
+        .dropdown-item i { display: block; font-size: 1.2rem; margin-bottom: 8px; color: var(--gold-solid); }
+        .dropdown-item span { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; }
+
+        /* =========================================
+           CONTENU PRINCIPAL
+           ========================================= */
+        main { padding: 100px 5% 40px; }
+
+        .service-banner {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .service-banner img { width: 80px; height: 80px; object-fit: contain; margin-bottom: 15px; }
+        .service-banner h1 { 
+            font-size: 1.5rem; 
+            text-transform: uppercase; 
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+        .service-banner p { color: var(--gray-text); font-size: 0.8rem; letter-spacing: 1px; }
+
+        /* SECTIONS TITLES */
+        .section-h {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: var(--gold-solid);
+            letter-spacing: 2px;
+            margin: 40px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+        .section-h::after { content: ""; height: 1px; flex: 1; background: var(--border); }
+
+        /* PACKS GRID */
+        .packs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+        }
+
+        .pack-card {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            padding: 20px 10px;
+            text-align: center;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .pack-card:hover { border-color: var(--gold-solid); }
+        .pack-card.selected { border-color: var(--gold-solid); background: rgba(184, 134, 11, 0.05); }
+
+        .pack-card .select-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.8rem;
+            color: var(--border);
+        }
+        .pack-card.selected .select-icon { color: var(--gold-solid); }
+
+        .pack-card i.fa-gem {
+            font-size: 1.5rem;
+            color: #0ea5e9;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .pack-name { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 5px; }
+        .pack-price { display: block; font-size: 0.8rem; color: var(--gold-solid); font-weight: 800; }
+
+        /* BUTTON VOIR PLUS */
+        .btn-more {
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--white);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        /* ABONNEMENTS */
+        .subs-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        .sub-card {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .sub-card.selected { border-color: var(--gold-solid); }
+        .sub-icon { width: 50px; height: 50px; background: #1e1b4b; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--violet-streaming); }
+        .sub-info { flex: 1; }
+        .sub-info h4 { font-size: 0.9rem; margin-bottom: 2px; }
+        .sub-info p { font-size: 0.7rem; color: var(--gray-text); }
+        .sub-price { font-weight: 800; color: var(--gold-solid); font-size: 0.9rem; }
+
+        /* PANIER FLOTTANT */
+        .cart-summary {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--black-soft);
+            border-top: 1px solid var(--gold-solid);
+            padding: 20px 5%;
+            z-index: 1001;
+            transform: translateY(100%);
+            transition: 0.4s;
+        }
+        .cart-summary.active { transform: translateY(0); }
+        .cart-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .cart-total span { font-size: 0.75rem; text-transform: uppercase; color: var(--gray-text); display: block; }
+        .cart-total h2 { font-size: 1.2rem; color: var(--gold-solid); font-weight: 800; }
+        .btn-next { background: var(--gold-gradient); color: var(--black); padding: 12px 25px; border: none; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; border-radius: 2px; cursor: pointer; }
+
+        /* FORMULAIRE MODAL */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: var(--black-soft);
+            border: 1px solid var(--gold-solid);
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            border-radius: 4px;
+        }
+        .modal-content h3 { font-size: 1.1rem; text-transform: uppercase; color: var(--gold-solid); margin-bottom: 25px; text-align: center; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.7rem; color: var(--gold-solid); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+        .form-group input { width: 100%; padding: 14px; background: #000; border: 1px solid var(--border); color: #fff; font-family: 'Inter', sans-serif; }
+        .form-group input:focus { border-color: var(--gold-solid); outline: none; }
+
+    </style>
+</head>
+<body>
+
+    <!-- DROPDOWN NAVIGATION -->
+    <div id="main-dropdown">
+        <a href="home.html" class="dropdown-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+        <a href="services.html" class="dropdown-item"><i class="fa-solid fa-wallet"></i><span>Finances</span></a>
+        <a href="netflix.html" class="dropdown-item"><i class="fa-solid fa-tv"></i><span>Streaming</span></a>
+        <a href="commande.html" class="dropdown-item"><i class="fa-solid fa-receipt"></i><span>Commandes</span></a>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <a href="home.html"><i class="fa-solid fa-arrow-left"></i></a>
+        </div>
+        <div class="header-center">
+            <img src="assets/logos/payfusion-logo.svg" alt="PAYFUSION">
+        </div>
+        <div class="header-right" id="burger-trigger">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </div>
+    </header>
+
+    <main>
+        <div class="service-banner">
+            <img src="assets/logos/freefire-logo.png" alt="Free Fire">
+            <h1>Diamants Free Fire</h1>
+            <p>Livraison instantanée par Player ID ✓</p>
+        </div>
+
+        <!-- PACKS DIAMANTS -->
+        <h3 class="section-h"><i class="fa-solid fa-gem"></i> Recharges Diamants</h3>
+        <div class="packs-grid" id="packs-container">
+            <!-- Les packs seront générés par JS -->
+        </div>
+        <button class="btn-more" id="btn-show-more" onclick="showAllPacks()">Afficher tous les packs (21 options) <i class="fa-solid fa-chevron-down"></i></button>
+
+        <!-- ABONNEMENTS -->
+        <h3 class="section-h"><i class="fa-solid fa-crown"></i> Abonnements Garena</h3>
+        <div class="subs-grid">
+            <div class="sub-card" onclick="toggleSub('Offre Semaine', 325, this)">
+                <div class="sub-icon"><i class="fa-solid fa-calendar-week"></i></div>
+                <div class="sub-info">
+                    <h4>Offre Semaine</h4>
+                    <p>450 diamants au total + Bonus</p>
+                </div>
+                <div class="sub-price">325 Gdes</div>
+            </div>
+
+            <div class="sub-card" onclick="toggleSub('Offre Mensuelle', 1600, this)">
+                <div class="sub-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                <div class="sub-info">
+                    <h4>Offre Mensuelle</h4>
+                    <p>2600 diamants au total + Packs or</p>
+                </div>
+                <div class="sub-price">1,600 Gdes</div>
+            </div>
+
+            <div class="sub-card" onclick="toggleSub('Level Up Pass', 950, this)">
+                <div class="sub-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="sub-info">
+                    <h4>Level Up Pass</h4>
+                    <p>800 diamants débloqués par niveau</p>
+                </div>
+                <div class="sub-price">950 Gdes</div>
+            </div>
+        </div>
+
+        <div style="height: 120px;"></div> <!-- Espace pour le panier flottant -->
+    </main>
+
+    <!-- PANIER FLOTTANT -->
+    <div class="cart-summary" id="cart-summary">
+        <div class="cart-flex">
+            <div class="cart-total">
+                <span id="items-count">0 article sélectionné</span>
+                <h2 id="total-display">0 Gdes</h2>
+            </div>
+            <button class="btn-next" onclick="openOrderModal()">Commander ✓</button>
+        </div>
+    </div>
+
+    <!-- MODAL INFOS COMPTE -->
+    <div class="modal-overlay" id="order-modal">
+        <div class="modal-content">
+            <h3>Infos du Compte</h3>
+            <div class="form-group">
+                <label>ID Joueur (Player ID)</label>
+                <input type="number" id="player-id" placeholder="Entrez votre Player ID">
+            </div>
+            <div class="form-group">
+                <label>Nom du compte (Pseudo)</label>
+                <input type="text" id="account-name" placeholder="Votre nom dans le jeu">
+            </div>
+            <div class="form-group">
+                <label>Numéro WhatsApp</label>
+                <input type="tel" id="whatsapp" placeholder="+509">
+            </div>
+            <button class="btn-validate" onclick="submitFinalOrder()">Valider ma commande [ > ]</button>
+            <button class="btn-more" style="border:none; color: var(--gray-text);" onclick="closeOrderModal()">Annuler</button>
+        </div>
+    </div>
+
+    <script>
+        const burger = document.getElementById('burger-trigger');
+        const dropdown = document.getElementById('main-dropdown');
+        const packsContainer = document.getElementById('packs-container');
+        const cartSummary = document.getElementById('cart-summary');
+        
+        let selectedItems = [];
+        let totalAmount = 0;
+        let showingAll = false;
+
+        const allPacks = [
+            { id: 1, name: "100+10 Diamants", price: 165 },
+            { id: 2, name: "210+21 Diamants", price: 340 },
+            { id: 3, name: "310+31 Diamants", price: 500 },
+            { id: 4, name: "420+42 Diamants", price: 680 },
+            { id: 5, name: "530+53 Diamants", price: 820 },
+            { id: 6, name: "640+64 Diamants", price: 990 },
+            { id: 7, name: "750+75 Diamants", price: 1150 },
+            { id: 8, name: "860+86 Diamants", price: 1320 },
+            { id: 9, name: "1080+108 Diamants", price: 1600 },
+            { id: 10, name: "1500+150 Diamants", price: 2100 },
+            { id: 11, name: "2200+220 Diamants", price: 3200 },
+            { id: 12, name: "2500+250 Diamants", price: 3600 },
+            { id: 13, name: "3000+300 Diamants", price: 4200 },
+            { id: 14, name: "3500+350 Diamants", price: 4850 },
+            { id: 15, name: "4000+400 Diamants", price: 5500 },
+            { id: 16, name: "4500+450 Diamants", price: 6200 },
+            { id: 17, name: "5000+500 Diamants", price: 6900 },
+            { id: 18, name: "5600+560 Diamants", price: 8000 },
+            { id: 19, name: "7000+700 Diamants", price: 9800 },
+            { id: 20, name: "8000+800 Diamants", price: 11200 },
+            { id: 21, name: "10000+1000 Diamants", price: 14000 }
+        ];
+
+        // Menu Dropdown
+        burger.addEventListener('click', () => dropdown.classList.toggle('show'));
+
+        // Init Packs (Affichage progressif)
+        function renderPacks() {
+            packsContainer.innerHTML = "";
+            const count = showingAll ? 21 : 6;
+            for(let i=0; i<count; i++) {
+                const pack = allPacks[i];
+                const card = document.createElement('div');
+                card.className = "pack-card";
+                card.id = "pack-" + pack.id;
+                card.innerHTML = `
+                    <i class="fa-solid fa-gem"></i>
+                    <i class="fa-solid fa-circle-check select-icon"></i>
+                    <span class="pack-name">${pack.name}</span>
+                    <span class="pack-price">${pack.price.toLocaleString()} Gdes</span>
+                `;
+                card.onclick = () => toggleItem(pack, card);
+                packsContainer.appendChild(card);
+            }
+        }
+
+        function showAllPacks() {
+            showingAll = true;
+            document.getElementById('btn-show-more').style.display = 'none';
+            renderPacks();
+        }
+
+        function toggleItem(item, element) {
+            const index = selectedItems.findIndex(i => i.id === "p" + item.id);
+            if(index > -1) {
+                selectedItems.splice(index, 1);
+                element.classList.remove('selected');
+            } else {
+                selectedItems.push({ id: "p" + item.id, name: item.name, price: item.price });
+                element.classList.add('selected');
+            }
+            updateCart();
+        }
+
+        function toggleSub(name, price, element) {
+            const index = selectedItems.findIndex(i => i.name === name);
+            if(index > -1) {
+                selectedItems.splice(index, 1);
+                element.classList.remove('selected');
+            } else {
+                selectedItems.push({ id: "s-" + name, name: name, price: price });
+                element.classList.add('selected');
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            totalAmount = selectedItems.reduce((acc, curr) => acc + curr.price, 0);
+            document.getElementById('total-display').innerText = totalAmount.toLocaleString() + " Gdes";
+            document.getElementById('items-count').innerText = selectedItems.length + " article(s) sélectionné(s)";
+            
+            if(selectedItems.length > 0) cartSummary.classList.add('active');
+            else cartSummary.classList.remove('active');
+        }
+
+        function openOrderModal() {
+            document.getElementById('order-modal').classList.add('active');
+        }
+
+        function closeOrderModal() {
+            document.getElementById('order-modal').classList.remove('active');
+        }
+
+        function submitFinalOrder() {
+            const pID = document.getElementById('player-id').value;
+            const aName = document.getElementById('account-name').value;
+            const wa = document.getElementById('whatsapp').value;
+
+            if(!pID || !aName || !wa) {
+                alert("Veuillez remplir toutes les informations du compte.");
+                return;
+            }
+
+            const finalOrder = {
+                type: "Gaming",
+                service: "Free Fire",
+                items: selectedItems,
+                total: totalAmount,
+                playerID: pID,
+                accountName: aName,
+                whatsapp: wa,
+                date: new Date().toISOString()
+            };
+
+            localStorage.setItem('pendingOrder', JSON.stringify(finalOrder));
+            window.location.href = "payment.html";
+        }
+
+        renderPacks();
+    </script>
+</body>
+</html>

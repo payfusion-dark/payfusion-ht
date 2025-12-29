@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Services Financiers | PAY FUSION</title>
+    
+    <!-- POLICE INTER -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- ICONS EXTERNES (FONTAWESOME) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* =========================================
+           SYSTÈME DE DESIGN GOLD MÉTALLIQUE
+           ========================================= */
+        :root {
+            --gold-gradient: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --gold-solid: #D4AF37;
+            --black: #000000;
+            --black-soft: #0A0A0A;
+            --black-card: #111111;
+            --white: #F8F8F8;
+            --gray-text: #888888;
+            --border: #1A1A1A;
+            --font-size-base: 0.875rem; /* 14px */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--font-size-base);
+            color: var(--white);
+            background-color: var(--black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           HEADER FIXE
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            z-index: 1000;
+        }
+
+        .header-left i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
+        .header-center img { height: 30px; object-fit: contain; }
+        .header-right i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
+
+        /* =========================================
+           DROPDOWN MENU (Copie conforme home.html)
+           ========================================= */
+        #main-dropdown {
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.98);
+            border-bottom: 1px solid var(--gold-solid);
+            z-index: 999;
+            padding: 100px 5% 40px;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        #main-dropdown.show { top: 0; }
+        .dropdown-item {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--white);
+        }
+        .dropdown-item i { display: block; font-size: 1.2rem; margin-bottom: 8px; color: var(--gold-solid); }
+        .dropdown-item span { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; }
+
+        /* =========================================
+           CONTENU PRINCIPAL
+           ========================================= */
+        main { padding: 100px 5% 40px; }
+
+        .page-intro { text-align: center; margin-bottom: 40px; }
+        .page-intro h1 { 
+            font-size: 1.4rem; 
+            text-transform: uppercase; 
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .page-intro p { color: var(--gray-text); font-size: 0.8rem; }
+
+        /* TAUX DE CHANGE CARD */
+        .rate-card {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .rate-info h4 { font-size: 0.75rem; color: var(--gold-solid); text-transform: uppercase; margin-bottom: 4px; }
+        .rate-info p { font-size: 1.1rem; font-weight: 800; color: var(--white); }
+        .rate-icon i { font-size: 1.5rem; color: var(--gold-solid); opacity: 0.5; }
+
+        /* SERVICES GRID (ÉTAPE 1) */
+        .services-selection {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .service-box {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .service-box:hover { border-color: var(--gold-solid); }
+        .service-box img { width: 50px; height: 50px; object-fit: contain; }
+        .service-box h3 { font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .service-box i { margin-left: auto; color: var(--gray-text); font-size: 0.9rem; }
+
+        /* POPUP SÉLECTION MONTANT (ÉTAPE 2) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
+            align-items: flex-end;
+        }
+        .modal-overlay.active { display: flex; }
+        
+        .modal-content {
+            width: 100%;
+            background: var(--black-soft);
+            border-top: 2px solid var(--gold-solid);
+            padding: 30px 5%;
+            border-radius: 20px 20px 0 0;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.4s ease;
+        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .modal-header h2 { font-size: 1rem; text-transform: uppercase; color: var(--gold-solid); }
+        .close-modal { font-size: 1.4rem; color: var(--white); cursor: pointer; }
+
+        .amount-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .amount-card {
+            background: #050505;
+            border: 1px solid var(--border);
+            padding: 15px;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .amount-card.active { border-color: var(--gold-solid); background: rgba(179, 135, 40, 0.05); }
+        .amount-card .usd { display: block; font-size: 1rem; font-weight: 800; color: var(--white); margin-bottom: 4px; }
+        .amount-card .htg { display: block; font-size: 0.7rem; color: var(--gray-text); text-transform: uppercase; }
+
+        /* RÉCAPITULATIF & FORMULAIRE (ÉTAPE 3) */
+        .order-summary {
+            background: #080808;
+            border: 1px solid var(--border);
+            padding: 20px;
+            margin-bottom: 25px;
+            display: none; /* Affiché après sélection */
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.8rem;
+        }
+        .summary-row.total {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--border);
+            font-weight: 800;
+            color: var(--gold-solid);
+            font-size: 0.95rem;
+        }
+
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 0.7rem; color: var(--gold-solid); text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            background: #000;
+            border: 1px solid var(--border);
+            color: var(--white);
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            border-radius: 2px;
+        }
+
+        .btn-validate {
+            width: 100%;
+            padding: 16px;
+            background: var(--gold-gradient);
+            color: var(--black);
+            border: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- DROPDOWN NAVIGATION -->
+    <div id="main-dropdown">
+        <a href="home.html" class="dropdown-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+        <a href="freefire.html" class="dropdown-item"><i class="fa-solid fa-gamepad"></i><span>Gaming</span></a>
+        <a href="netflix.html" class="dropdown-item"><i class="fa-solid fa-tv"></i><span>Streaming</span></a>
+        <a href="commande.html" class="dropdown-item"><i class="fa-solid fa-receipt"></i><span>Commandes</span></a>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <a href="home.html"><i class="fa-solid fa-arrow-left"></i></a>
+        </div>
+        <div class="header-center">
+            <img src="assets/logos/payfusion-logo.svg" alt="PAYFUSION">
+        </div>
+        <div class="header-right" id="burger-trigger">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </div>
+    </header>
+
+    <main>
+        <div class="page-intro">
+            <h1>Services Financiers</h1>
+            <p>Rechargez vos comptes internationaux instantanément</p>
+        </div>
+
+        <div class="rate-card">
+            <div class="rate-info">
+                <h4>Taux de change fixe</h4>
+                <p>1 USD = 150.00 HTG</p>
+            </div>
+            <div class="rate-icon"><i class="fa-solid fa-rotate"></i></div>
+        </div>
+
+        <!-- SÉLECTION DU SERVICE -->
+        <div class="services-selection">
+            <div class="service-box" onclick="openService('Wise', 'assets/logos/wise-logo.png')">
+                <img src="assets/logos/wise-logo.png" alt="Wise">
+                <h3>Wise (TransferWise)</h3>
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+
+            <div class="service-box" onclick="openService('PayPal', 'assets/logos/paypal-logo.png')">
+                <img src="assets/logos/paypal-logo.png" alt="PayPal">
+                <h3>PayPal (Amis/Proches)</h3>
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+
+            <div class="service-box" onclick="openService('USDT', 'assets/logos/usdt-logo.png')">
+                <img src="assets/logos/usdt-logo.png" alt="USDT">
+                <h3>USDT (Réseau TRC20)</h3>
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL SÉLECTION QUANTITÉ -->
+    <div class="modal-overlay" id="service-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">SÉLECTIONNER LE MONTANT</h2>
+                <div class="close-modal" id="close-modal-btn"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+
+            <div class="amount-grid" id="amount-grid">
+                <!-- Généré par JS : 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 -->
+            </div>
+
+            <div class="order-summary" id="order-summary">
+                <div class="summary-row">
+                    <span>Frais de service (Charge)</span>
+                    <span>0.00 USD (0%)</span>
+                </div>
+                <div class="summary-row">
+                    <span>Taux appliqué</span>
+                    <span>150 HTG</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total à payer</span>
+                    <span id="total-htg">0 HTG</span>
+                </div>
+            </div>
+
+            <div id="form-container" style="display: none;">
+                <div class="input-group">
+                    <label id="input-label">Email du bénéficiaire</label>
+                    <input type="text" id="beneficiary-info" placeholder="Entrez les informations ici">
+                </div>
+                <button class="btn-validate" onclick="processOrder()">Continuer vers le paiement ✓</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIQUE JAVASCRIPT -->
+    <script>
+        const burger = document.getElementById('burger-trigger');
+        const dropdown = document.getElementById('main-dropdown');
+        const modal = document.getElementById('service-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const amountGrid = document.getElementById('amount-grid');
+        
+        let currentService = "";
+        let selectedUSD = 0;
+        const exchangeRate = 150;
+
+        // Menu Dropdown
+        burger.addEventListener('click', () => dropdown.classList.toggle('show'));
+
+        // Ouvrir Service
+        function openService(name, logo) {
+            currentService = name;
+            document.getElementById('modal-title').innerText = name + " - MONTANT";
+            
+            // Adapter le label du formulaire
+            const label = document.getElementById('input-label');
+            if(name === 'USDT') label.innerText = "Adresse du portefeuille (Wallet)";
+            else label.innerText = "Email du compte " + name;
+
+            renderAmounts();
+            modal.classList.add('active');
+        }
+
+        // Fermer Modal
+        closeModalBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+            resetModal();
+        });
+
+        function resetModal() {
+            selectedUSD = 0;
+            document.getElementById('order-summary').style.display = 'none';
+            document.getElementById('form-container').style.display = 'none';
+        }
+
+        // Générer les 10 montants USD
+        function renderAmounts() {
+            amountGrid.innerHTML = "";
+            for (let i = 10; i <= 100; i += 10) {
+                const card = document.createElement('div');
+                card.className = "amount-card";
+                card.innerHTML = `
+                    <span class="usd">${i} USD</span>
+                    <span class="htg">${(i * exchangeRate).toLocaleString()} HTG</span>
+                `;
+                card.onclick = () => selectAmount(i, card);
+                amountGrid.appendChild(card);
+            }
+        }
+
+        function selectAmount(usd, element) {
+            selectedUSD = usd;
+            
+            // UI
+            document.querySelectorAll('.amount-card').forEach(c => c.classList.remove('active'));
+            element.classList.add('active');
+            
+            document.getElementById('order-summary').style.display = 'block';
+            document.getElementById('form-container').style.display = 'block';
+            document.getElementById('total-htg').innerText = (usd * exchangeRate).toLocaleString() + " HTG";
+        }
+
+        // Sauvegarder et rediriger vers le paiement
+        function processOrder() {
+            const info = document.getElementById('beneficiary-info').value;
+            if(!info) {
+                alert("Veuillez entrer les informations du bénéficiaire.");
+                return;
+            }
+
+            const orderData = {
+                type: "Service Financier",
+                service: currentService,
+                amountUSD: selectedUSD,
+                amountHTG: selectedUSD * exchangeRate,
+                beneficiary: info,
+                date: new Date().toISOString()
+            };
+
+            // Stockage temporaire pour la page payment.html
+            localStorage.setItem('pendingOrder', JSON.stringify(orderData));
+            window.location.href = "payment.html";
+        }
+
+    </script>
+</body>
+</html>
