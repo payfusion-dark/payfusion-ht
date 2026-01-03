@@ -1,6 +1,7 @@
 /* ============================================================
-   PAY FUSION - CONFIGURATION BACKEND CENTRALISÉE
-   DÉVELOPPEUR : NXY ST3PH (VERSION PRODUCTION 2026)
+   PAY FUSION - CONFIGURATION RÉELLE
+   DÉVELOPPEUR : NXY ST3PH
+   PROJET ID : pay-fusion-d0eaf
    ============================================================ */
 
 const firebaseConfig = {
@@ -12,7 +13,7 @@ const firebaseConfig = {
     appId: "1:713035702480:web:d05998b07c529ec2043ed5"
 };
 
-// Initialisation unique
+// Initialisation de Firebase
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
@@ -20,12 +21,12 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Paramètres de la plateforme
-const PLATFORM_SETTINGS = {
+// Constantes Globales
+const PLATFORM_INFO = {
+    name: "PAY FUSION",
+    taux: 150, // 1 USD = 150 HTG
     adminEmail: "bmarcco4412@gmail.com",
-    tauxChange: 150, // 1 USD = 150 HTG
-    contactWhatsApp: "+50939442808",
-    supportEmail: "support.payfusion@gmail.com"
+    whatsapp: "+50939442808"
 };
 
-console.log("PAY FUSION ● Système Firebase Connecté ●");
+console.log("PAY FUSION ● Système Connecté ✓");
