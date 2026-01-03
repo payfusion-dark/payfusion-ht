@@ -43,12 +43,10 @@
             background-color: var(--black);
             line-height: 1.6;
             overflow-x: hidden;
-            display: none; /* Caché par défaut pour la sécurité */
+            display: none; /* Sécurité avant vérification email */
         }
 
-        /* =========================================
-           HEADER ADMIN
-           ========================================= */
+        /* HEADER */
         header {
             position: fixed;
             top: 0;
@@ -64,21 +62,13 @@
             z-index: 1000;
         }
 
-        .header-left h1 { 
-            font-size: 0.9rem; 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            color: var(--gold-solid);
-            font-weight: 800;
-        }
+        .header-left h1 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-solid); font-weight: 800; }
         .header-right i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
 
-        /* =========================================
-           DASHBOARD CONTENT
-           ========================================= */
+        /* CONTENT */
         main { padding: 90px 5% 40px; }
 
-        /* STATS CARDS */
+        /* STATS */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -93,15 +83,15 @@
             text-align: center;
         }
         .stat-card i { font-size: 1.2rem; color: var(--gold-solid); margin-bottom: 10px; display: block; }
-        .stat-card span { font-size: 0.65rem; text-transform: uppercase; color: var(--gray-text); display: block; margin-bottom: 5px; }
-        .stat-card h2 { font-size: 1.2rem; font-weight: 800; color: var(--white); }
+        .stat-card span { font-size: 0.6rem; text-transform: uppercase; color: var(--gray-text); display: block; margin-bottom: 5px; }
+        .stat-card h2 { font-size: 1.1rem; font-weight: 800; }
 
-        /* NAVIGATION TABS */
+        /* TABS */
         .admin-nav {
             display: flex;
             background: var(--black-soft);
             border: 1px solid var(--border);
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             overflow-x: auto;
         }
         .nav-tab {
@@ -116,12 +106,11 @@
             border-bottom: 2px solid transparent;
             white-space: nowrap;
         }
-        .nav-tab.active { color: var(--gold-solid); border-bottom-color: var(--gold-solid); background: rgba(179,135,40,0.05); }
+        .nav-tab.active { color: var(--gold-solid); border-bottom-color: var(--gold-solid); }
 
-        /* SECTION TABLES */
-        .admin-section { display: none; animation: fadeIn 0.3s ease; }
+        /* SECTIONS */
+        .admin-section { display: none; }
         .admin-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .table-container {
             background: var(--black-card);
@@ -130,117 +119,101 @@
             overflow-x: auto;
         }
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { background: #080808; padding: 15px; text-align: left; font-size: 0.7rem; text-transform: uppercase; color: var(--gold-solid); border-bottom: 1px solid var(--border); }
-        td { padding: 15px; font-size: 0.8rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
-        
-        /* STATUS BADGES */
-        .badge { padding: 4px 8px; border-radius: 2px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; }
-        .badge-pending { background: rgba(179,135,40,0.1); color: var(--gold-solid); }
+        th { background: #080808; padding: 15px; text-align: left; font-size: 0.65rem; text-transform: uppercase; color: var(--gold-solid); border-bottom: 1px solid var(--border); }
+        td { padding: 15px; font-size: 0.75rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+
+        .badge { padding: 4px 8px; border-radius: 2px; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; }
+        .badge-pending { background: rgba(184, 134, 11, 0.1); color: var(--gold-solid); }
         .badge-success { background: rgba(16, 185, 129, 0.1); color: var(--success-green); }
         .badge-error { background: rgba(239, 68, 68, 0.1); color: var(--error-red); }
 
-        /* ACTIONS */
         .btn-action {
-            padding: 6px 10px;
+            padding: 8px;
             border: 1px solid var(--border);
             background: transparent;
             color: var(--white);
             cursor: pointer;
             border-radius: 2px;
-            font-size: 0.7rem;
             margin-right: 5px;
+            font-size: 0.75rem;
         }
         .btn-val { border-color: var(--success-green); color: var(--success-green); }
         .btn-can { border-color: var(--error-red); color: var(--error-red); }
 
-        /* USER SEARCH */
-        .search-bar {
-            width: 100%;
-            padding: 12px;
-            background: var(--black-soft);
-            border: 1px solid var(--border);
-            color: var(--white);
-            margin-bottom: 20px;
-            outline: none;
-        }
-        .search-bar:focus { border-color: var(--gold-solid); }
-
-        /* PREUVE MODAL */
+        /* VISIONNEUSE IMAGE (BASE64) */
         .modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.95);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 2000;
+            padding: 20px;
         }
-        .modal-content { max-width: 90%; max-height: 90%; position: relative; }
-        .modal-content img { width: 100%; height: auto; border: 1px solid var(--gold-solid); }
-        .close-modal { position: absolute; top: -40px; right: 0; color: var(--white); font-size: 2rem; cursor: pointer; }
+        .modal-content { max-width: 100%; max-height: 80vh; position: relative; }
+        .modal-content img { width: 100%; height: auto; border: 1px solid var(--gold-solid); box-shadow: 0 0 20px var(--gold-solid); }
+        .close-modal { position: absolute; top: -50px; right: 0; color: var(--gold-solid); font-size: 2.5rem; cursor: pointer; }
 
     </style>
 </head>
 <body>
 
-    <!-- MODAL PREUVE -->
+    <!-- VISIONNEUSE PREUVE -->
     <div class="modal" id="preuve-modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closePreuve()"><i class="fa-solid fa-xmark"></i></span>
+            <span class="close-modal" onclick="closePreuve()"><i class="fa-solid fa-circle-xmark"></i></span>
             <img src="" id="img-preuve" alt="Preuve de paiement">
         </div>
     </div>
 
-    <!-- HEADER -->
     <header>
         <div class="header-left">
-            <h1>PAY FUSION <span style="font-weight: 300;">| ADMIN</span></h1>
+            <h1>PAY FUSION ● ADMIN</h1>
         </div>
         <div class="header-right">
-            <i class="fa-solid fa-right-from-bracket" onclick="auth.signOut()"></i>
+            <i class="fa-solid fa-power-off" onclick="auth.signOut()"></i>
         </div>
     </header>
 
     <main>
-        <!-- SECTION 1 : STATISTIQUES -->
+        <!-- STATS -->
         <div class="stats-grid">
             <div class="stat-card">
                 <i class="fa-solid fa-users"></i>
-                <span>Utilisateurs</span>
+                <span>Clients</span>
                 <h2 id="count-users">0</h2>
             </div>
             <div class="stat-card">
-                <i class="fa-solid fa-clock"></i>
-                <span>En attente</span>
+                <i class="fa-solid fa-hourglass-start"></i>
+                <span>À Valider</span>
                 <h2 id="count-pending">0</h2>
             </div>
             <div class="stat-card">
-                <i class="fa-solid fa-sack-dollar"></i>
-                <span>Revenus Jour (HTG)</span>
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Revenus Jour</span>
                 <h2 id="count-revenue">0</h2>
             </div>
             <div class="stat-card">
-                <i class="fa-solid fa-check-double"></i>
-                <span>Validées</span>
+                <i class="fa-solid fa-box-open"></i>
+                <span>Livrées</span>
                 <h2 id="count-success">0</h2>
             </div>
         </div>
 
-        <!-- NAVIGATION -->
         <div class="admin-nav">
             <div class="nav-tab active" onclick="switchTab('orders', this)">Commandes</div>
-            <div class="nav-tab" onclick="switchTab('users', this)">Utilisateurs</div>
-            <div class="nav-tab" onclick="switchTab('config', this)">Configuration</div>
+            <div class="nav-tab" onclick="switchTab('users', this)">Clients</div>
         </div>
 
-        <!-- SECTION 2 : GESTION COMMANDES -->
+        <!-- SECTION COMMANDES -->
         <div id="orders" class="admin-section active">
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Service</th>
+                            <th>Service/Produit</th>
                             <th>Montant</th>
                             <th>Preuve</th>
                             <th>Statut</th>
@@ -248,41 +221,28 @@
                         </tr>
                     </thead>
                     <tbody id="orders-list">
-                        <!-- Généré par JS -->
+                        <!-- Chargement dynamique -->
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- SECTION 3 : GESTION UTILISATEURS -->
+        <!-- SECTION UTILISATEURS -->
         <div id="users" class="admin-section">
-            <input type="text" class="search-bar" placeholder="Rechercher par email ou nom..." onkeyup="searchUser(this.value)">
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
                             <th>Nom</th>
                             <th>Email</th>
+                            <th>WhatsApp</th>
                             <th>Solde (HTG)</th>
-                            <th>Rôle</th>
                         </tr>
                     </thead>
                     <tbody id="users-list">
-                        <!-- Généré par JS -->
+                        <!-- Chargement dynamique -->
                     </tbody>
                 </table>
-            </div>
-        </div>
-
-        <!-- SECTION 4 : CONFIGURATION -->
-        <div id="config" class="admin-section">
-            <div class="table-container" style="padding: 30px; text-align: center;">
-                <p style="color: var(--gray-text); font-size: 0.8rem;">Paramètres généraux de la plateforme Pay Fusion ✓</p>
-                <div style="margin-top: 20px; display: grid; gap: 10px;">
-                    <button class="btn-action" style="width: 100%; padding: 15px;">Modifier Taux de change (150)</button>
-                    <button class="btn-action" style="width: 100%; padding: 15px;">Maintenance Mode (OFF)</button>
-                    <button class="btn-action" style="width: 100%; padding: 15px; border-color: var(--gold-solid); color: var(--gold-solid);">Backup Base de données</button>
-                </div>
             </div>
         </div>
     </main>
@@ -294,112 +254,108 @@
 
     <script>
         const firebaseConfig = {
-        apiKey: "AIzaSyAV3RoOAL4XgGQSGnEU0_Q1q5UcEce4LBg",
-        authDomain: "pay-fusion-d0eaf.firebaseapp.com",
-        projectId: "pay-fusion-d0eaf",
-        storageBucket: "pay-fusion-d0eaf.firebasestorage.app",
-        messagingSenderId: "713035702480",
-        appId: "1:713035702480:web:d05998b07c529ec2043ed5"
+            apiKey: "AIzaSyB5_KighCQRfslRjZtGZPxs3OUqqQRk7IE",
+            authDomain: "pay-fusion-26a79.firebaseapp.com",
+            projectId: "pay-fusion-26a79",
+            storageBucket: "pay-fusion-26a79.firebasestorage.app",
+            messagingSenderId: "771406909196",
+            appId: "1:771406909196:web:27bdf4db07ad8d08418329"
         };
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // 1. SÉCURITÉ : VÉRIFIER SI ADMIN
+        // 1. SÉCURITÉ STRICTE
         auth.onAuthStateChanged(user => {
             if (user && user.email === "bmarcco4412@gmail.com") {
                 document.body.style.display = "block";
-                initAdmin();
+                initDashboard();
             } else {
                 window.location.href = "login.html";
             }
         });
 
-        // 2. INITIALISATION DONNÉES
-        function initAdmin() {
-            // Stats Temps Réel
+        function initDashboard() {
+            // Stats Utilisateurs
             db.collection('users').onSnapshot(snap => {
                 document.getElementById('count-users').innerText = snap.size;
                 renderUsers(snap);
             });
 
+            // Stats et Liste Commandes
             db.collection('commandes').orderBy('date', 'desc').onSnapshot(snap => {
-                let pending = 0;
-                let success = 0;
-                let revenue = 0;
+                let pending = 0; let success = 0; let revenue = 0;
                 const today = new Date().toLocaleDateString();
 
                 snap.forEach(doc => {
-                    const data = doc.data();
-                    if(data.statut === "En attente") pending++;
-                    if(data.statut === "Livré") {
+                    const d = doc.data();
+                    if(d.statut === "En attente") pending++;
+                    if(d.statut === "Livré") {
                         success++;
-                        const orderDate = data.date ? data.date.toDate().toLocaleDateString() : "";
-                        if(orderDate === today) revenue += parseFloat(data.montantPaye || 0);
+                        const orderDate = d.date ? d.date.toDate().toLocaleDateString() : "";
+                        if(orderDate === today) revenue += parseFloat(d.montantPaye || 0);
                     }
                 });
 
                 document.getElementById('count-pending').innerText = pending;
                 document.getElementById('count-success').innerText = success;
-                document.getElementById('count-revenue').innerText = revenue.toLocaleString();
+                document.getElementById('count-revenue').innerText = revenue.toLocaleString() + " G";
                 renderOrders(snap);
             });
         }
 
-        // 3. RENDU DES COMMANDES
         function renderOrders(snap) {
             const list = document.getElementById('orders-list');
             list.innerHTML = "";
             snap.forEach(doc => {
-                const order = doc.data();
+                const o = doc.data();
                 const id = doc.id;
-                const date = order.date ? order.date.toDate().toLocaleDateString() : "...";
-                const statusClass = order.statut === 'En attente' ? 'badge-pending' : (order.statut === 'Livré' ? 'badge-success' : 'badge-error');
+                const statusClass = o.statut === 'En attente' ? 'badge-pending' : (o.statut === 'Livré' ? 'badge-success' : 'badge-error');
                 
                 list.innerHTML += `
                     <tr>
-                        <td>${date}</td>
-                        <td><strong>${order.service}</strong><br><small>${order.produit}</small></td>
-                        <td>${order.montantPaye} HTG</td>
-                        <td><i class="fa-solid fa-image" style="color:var(--gold-solid); cursor:pointer;" onclick="viewPreuve('${order.preuveUrl}')"></i></td>
-                        <td><span class="badge ${statusClass}">${order.statut}</span></td>
+                        <td>${o.date ? o.date.toDate().toLocaleDateString() : "..."}</td>
+                        <td><strong>${o.service}</strong><br><small>${o.produit}</small></td>
+                        <td>${o.montantPaye} HTG</td>
+                        <td><i class="fa-solid fa-eye" style="color:var(--gold-solid); cursor:pointer; font-size:1.2rem;" onclick="viewPreuve('${o.preuveBase64}')"></i></td>
+                        <td><span class="badge ${statusClass}">${o.statut}</span></td>
                         <td>
-                            ${order.statut === 'En attente' ? `
+                            ${o.statut === 'En attente' ? `
                                 <button class="btn-action btn-val" onclick="updateStatus('${id}', 'Livré')"><i class="fa-solid fa-check"></i></button>
-                                <button class="btn-action btn-can" onclick="updateStatus('${id}', 'Annulé')"><i class="fa-solid fa-xmark"></i></button>
-                            ` : '<i class="fa-solid fa-lock" style="opacity:0.3"></i>'}
+                                <button class="btn-action btn-can" onclick="updateStatus('${id}', 'Annulé')"><i class="fa-solid fa-x"></i></button>
+                            ` : '<i class="fa-solid fa-lock" style="opacity:0.2"></i>'}
                         </td>
                     </tr>
                 `;
             });
         }
 
-        // 4. RENDU DES UTILISATEURS
         function renderUsers(snap) {
             const list = document.getElementById('users-list');
             list.innerHTML = "";
             snap.forEach(doc => {
-                const user = doc.data();
+                const u = doc.data();
                 list.innerHTML += `
                     <tr>
-                        <td>${user.fullName}</td>
-                        <td>${user.email}</td>
-                        <td>${user.balance || 0}</td>
-                        <td><span class="badge badge-success">${user.role}</span></td>
+                        <td>${u.fullName}</td>
+                        <td>${u.email}</td>
+                        <td>${u.phone || "Non renseigné"}</td>
+                        <td>${(u.balance || 0).toLocaleString()}</td>
                     </tr>
                 `;
             });
         }
 
-        // ACTIONS
         function updateStatus(id, newStatus) {
-            if(confirm(`Confirmer le statut : ${newStatus} ?`)) {
+            if(confirm(`Passer la commande en : ${newStatus} ?`)) {
                 db.collection('commandes').doc(id).update({ statut: newStatus });
             }
         }
 
-        function viewPreuve(url) {
-            document.getElementById('img-preuve').src = url;
+        // VISIONNEUSE BASE64
+        function viewPreuve(base64) {
+            if(!base64) return alert("Aucune image disponible ●");
+            document.getElementById('img-preuve').src = base64;
             document.getElementById('preuve-modal').style.display = 'flex';
         }
 
@@ -413,16 +369,6 @@
             document.getElementById(target).classList.add('active');
             el.classList.add('active');
         }
-
-        function searchUser(val) {
-            // Logique de recherche simple sur le tableau actuel
-            const rows = document.querySelectorAll('#users-list tr');
-            rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                row.style.display = text.includes(val.toLowerCase()) ? "" : "none";
-            });
-        }
-
     </script>
 </body>
 </html>
