@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Paiement Sécurisé | PAY FUSION</title>
+    <title>Paiement Direct | PAY FUSION</title>
     
     <!-- POLICE INTER -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- ICONS EXTERNES (FONTAWESOME) -->
+    <!-- ICONS EXTERNES -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
@@ -36,8 +36,7 @@
             background-color: var(--black);
             line-height: 1.6;
             overflow-x: hidden;
-            /* On cache le contenu au départ pour éviter le flash de déconnexion */
-            visibility: hidden; 
+            display: none; /* Masqué pendant la vérification de session */
         }
 
         /* HEADER */
@@ -52,129 +51,135 @@
         }
 
         .header-left i { color: var(--gold-solid); font-size: 1.2rem; cursor: pointer; }
-        .header-center img { height: 32px; object-fit: contain; }
+        .header-center img { height: 30px; object-fit: contain; }
 
         /* CONTENT */
         main { padding: 100px 5% 40px; max-width: 600px; margin: 0 auto; }
 
-        .payment-header { text-align: center; margin-bottom: 35px; }
-        .payment-header h1 { 
-            font-size: 1.3rem; text-transform: uppercase; 
+        .section-header { text-align: center; margin-bottom: 30px; }
+        .section-header h1 { 
+            font-size: 1.2rem; text-transform: uppercase; 
             background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            font-weight: 800; margin-bottom: 10px;
+            font-weight: 800;
         }
 
-        /* CARTE RÉCAPITULATIF */
-        .order-preview {
+        /* RÉCAPITULATIF COMMANDE */
+        .order-summary-card {
             background: var(--black-card);
             border: 1px solid var(--gold-solid);
             padding: 20px; border-radius: 4px; margin-bottom: 30px;
         }
-        .preview-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.8rem; }
-        .preview-row span { color: var(--gray-text); }
-        .preview-row strong { color: var(--white); font-weight: 600; }
-        .total-row { border-top: 1px dashed var(--border); margin-top: 15px; padding-top: 15px; display: flex; justify-content: space-between; }
-        .total-row strong { font-size: 1.2rem; color: var(--gold-solid); font-weight: 900; }
+        .summary-line { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.8rem; }
+        .summary-line span { color: var(--gray-text); }
+        .summary-line strong { color: var(--white); }
+        .total-line { border-top: 1px dashed var(--border); margin-top: 15px; padding-top: 15px; display: flex; justify-content: space-between; }
+        .total-line strong { font-size: 1.1rem; color: var(--gold-solid); font-weight: 900; }
 
-        /* MÉTHODES */
-        .methods-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 30px; }
-        .method-btn {
+        /* CHOIX PAIEMENT */
+        .pay-methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 30px; }
+        .pay-option {
             background: var(--black-card); border: 1px solid var(--border);
-            padding: 15px 5px; text-align: center; cursor: pointer; border-radius: 4px;
+            padding: 15px 5px; text-align: center; cursor: pointer; border-radius: 4px; transition: 0.3s;
         }
-        .method-btn.active { border-color: var(--gold-solid); background: rgba(184, 134, 11, 0.05); }
-        .method-btn img { height: 20px; filter: grayscale(1); margin-bottom: 8px; opacity: 0.6; }
-        .method-btn.active img { filter: grayscale(0); opacity: 1; }
-        .method-btn span { display: block; font-size: 0.65rem; font-weight: 700; color: var(--gray-text); text-transform: uppercase; }
-        .method-btn.active span { color: var(--gold-solid); }
+        .pay-option.active { border-color: var(--gold-solid); background: rgba(184, 134, 11, 0.08); }
+        .pay-option img { height: 22px; filter: grayscale(1); opacity: 0.5; margin-bottom: 8px; }
+        .pay-option.active img { filter: grayscale(0); opacity: 1; }
+        .pay-option span { display: block; font-size: 0.65rem; font-weight: 700; color: var(--gray-text); text-transform: uppercase; }
+        .pay-option.active span { color: var(--gold-solid); }
 
-        /* INSTRUCTIONS & FORM */
-        #inst-box { background: #080808; border: 1px solid var(--border); padding: 25px; border-radius: 4px; margin-bottom: 30px; display: none; }
-        #inst-box h3 { font-size: 0.85rem; color: var(--gold-solid); text-transform: uppercase; margin-bottom: 15px; font-weight: 800; }
-        .copy-box { background: #000; border: 1px solid var(--border); padding: 12px; margin-top: 10px; color: var(--gold-solid); font-family: monospace; text-align: center; }
+        /* ZONE INSTRUCTIONS */
+        #payment-details { background: #080808; border: 1px solid var(--border); padding: 25px; border-radius: 4px; margin-bottom: 30px; display: none; }
+        .account-info { background: #000; border: 1px solid var(--border); padding: 12px; margin: 10px 0; color: var(--gold-solid); font-family: monospace; text-align: center; font-size: 1rem; }
 
+        /* FORMULAIRE */
         .input-group { margin-bottom: 20px; }
         .input-group label { display: block; font-size: 0.7rem; color: var(--gold-solid); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
-        input { width: 100%; padding: 14px; background: #000; border: 1px solid var(--border); color: #fff; outline: none; border-radius: 2px; font-family: 'Inter', sans-serif; }
-        
-        .upload-area { border: 2px dashed var(--border); padding: 30px; text-align: center; cursor: pointer; border-radius: 4px; margin-top: 10px; }
-        .upload-area i { font-size: 1.5rem; color: var(--gold-solid); margin-bottom: 10px; display: block; }
-        
-        .btn-submit {
+        input { width: 100%; padding: 14px; background: #000; border: 1px solid var(--border); color: #fff; outline: none; border-radius: 2px; }
+
+        .upload-box { border: 2px dashed var(--border); padding: 30px; text-align: center; cursor: pointer; border-radius: 4px; margin-top: 10px; }
+        .upload-box i { font-size: 1.5rem; color: var(--gold-solid); margin-bottom: 10px; display: block; }
+
+        .btn-confirm {
             width: 100%; padding: 18px; background: var(--gold-gradient); color: var(--black);
-            border: none; font-weight: 800; text-transform: uppercase; cursor: pointer; border-radius: 2px; margin-top: 30px;
+            border: none; font-weight: 800; text-transform: uppercase; cursor: pointer; border-radius: 2px; margin-top: 20px;
         }
 
-        /* CHARGEMENT */
-        #loader {
+        /* LOADER OVERLAY */
+        #auth-loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--black); z-index: 4000; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: var(--black); z-index: 5000; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .spin { width: 40px; height: 40px; border: 3px solid rgba(212, 175, 55, 0.1); border-top: 3px solid var(--gold-solid); border-radius: 50%; animation: rot 1s linear infinite; margin-bottom: 20px; }
+        .spin { width: 40px; height: 40px; border: 3px solid rgba(184, 134, 11, 0.1); border-top: 3px solid var(--gold-solid); border-radius: 50%; animation: rot 0.8s linear infinite; }
         @keyframes rot { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div id="loader">
+    <!-- LOADER ANTI-BOUCLE -->
+    <div id="auth-loader">
         <div class="spin"></div>
-        <p style="font-size: 0.7rem; color: var(--gold-solid); letter-spacing: 2px; text-transform: uppercase;">Sécurisation...</p>
+        <p style="margin-top:20px; font-size: 0.7rem; color: var(--gold-solid); text-transform: uppercase; letter-spacing: 2px;">Vérification Session...</p>
     </div>
 
     <header>
-        <div class="header-left"><a href="home.html" style="color: inherit;"><i class="fa-solid fa-arrow-left"></i></a></div>
+        <div class="header-left"><a href="home.html" style="color:inherit;"><i class="fa-solid fa-arrow-left"></i></a></div>
         <div class="header-center"><img src="assets/logos/payfusion-logo.svg" alt="PAYFUSION"></div>
         <div class="header-right"></div>
     </header>
 
     <main>
-        <div class="payment-header">
-            <h1>Confirmation d'Envoi</h1>
-            <p>Finalisez votre demande en quelques secondes ●</p>
+        <div class="section-header">
+            <h1>Validation de Commande</h1>
+            <p style="font-size: 0.75rem; color: var(--gray-text); text-transform: uppercase;">Paiement Manuel Sécurisé ●</p>
         </div>
 
-        <div class="order-preview" id="order-summary">
+        <!-- RÉCAPITULATIF -->
+        <div class="order-summary-card" id="summary-area">
             <!-- Rempli par JS -->
         </div>
 
-        <div class="methods-grid">
-            <div class="method-btn" onclick="selectPay('MonCash', this)">
+        <!-- CHOIX DU MODE -->
+        <div class="pay-methods">
+            <div class="pay-option" onclick="setMode('MonCash', this)">
                 <img src="assets/logos/moncash-logo.png" alt="MonCash">
                 <span>MonCash</span>
             </div>
-            <div class="method-btn" onclick="selectPay('NatCash', this)">
+            <div class="pay-option" onclick="setMode('NatCash', this)">
                 <img src="assets/logos/natcash-logo.png" alt="NatCash">
                 <span>NatCash</span>
             </div>
-            <div class="method-btn" onclick="selectPay('USDT', this)">
+            <div class="pay-option" onclick="setMode('USDT', this)">
                 <img src="assets/logos/usdt-logo.png" alt="USDT">
                 <span>USDT</span>
             </div>
         </div>
 
-        <div id="inst-box">
-            <h3 id="inst-title">Destinataire Officiel</h3>
-            <div id="inst-details"></div>
+        <!-- INSTRUCTIONS -->
+        <div id="payment-details">
+            <h3 id="inst-title">Coordonnées de paiement</h3>
+            <div id="inst-body"></div>
         </div>
 
-        <form id="payment-final-form" style="display: none;">
-            <div id="fields-area"></div>
+        <!-- FORMULAIRE DE PREUVE -->
+        <form id="order-final-form" style="display: none;">
+            <div id="extra-fields"></div>
             <div class="input-group">
-                <label>Montant exact envoyé</label>
-                <input type="number" id="amt" placeholder="0" required>
+                <label>Montant exact transféré</label>
+                <input type="number" id="final-amt" placeholder="Ex: 1500" required>
             </div>
             <div class="input-group">
-                <label>Capture d'écran (Preuve)</label>
-                <div class="upload-area" onclick="document.getElementById('file-in').click()">
-                    <i class="fa-solid fa-camera"></i>
-                    <p id="file-label" style="font-size: 0.7rem; color: var(--gray-text); text-transform: uppercase;">Ajouter l'image du reçu</p>
-                    <input type="file" id="file-in" style="display: none;" accept="image/*" onchange="handleImg(this)" required>
+                <label>Capture d'écran de la preuve</label>
+                <div class="upload-box" onclick="document.getElementById('file-field').click()">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <p id="file-name-label" style="font-size: 0.7rem; color: var(--gray-text); text-transform: uppercase;">Ajouter le reçu</p>
+                    <input type="file" id="file-field" style="display: none;" accept="image/*" onchange="processImg(this)" required>
                 </div>
             </div>
-            <button type="submit" class="btn-submit" id="v-btn">Valider ma commande ✓</button>
+            <button type="submit" class="btn-confirm" id="submit-btn">Soumettre ma commande ✓</button>
         </form>
     </main>
 
+    <!-- FIREBASE SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
@@ -192,68 +197,70 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        let currentUser = null;
-        let imgBase64 = "";
-        let payMethod = "";
-        const orderInfo = JSON.parse(localStorage.getItem('pendingOrder'));
+        let sessionUser = null;
+        let proofBase64 = "";
+        let currentMode = "";
+        const pendingOrder = JSON.parse(localStorage.getItem('pendingOrder'));
 
         // =========================================
-        // FIX : SÉCURISATION DE LA SESSION
+        // LOGIQUE ANTI-BOUCLE ET SÉCURITÉ
         // =========================================
         auth.onAuthStateChanged(user => {
             if (user) {
-                currentUser = user;
-                // On affiche la page seulement si l'utilisateur est confirmé
-                document.body.style.visibility = "visible";
-                document.getElementById('loader').style.display = "none";
-                initOrderDisplay();
+                sessionUser = user;
+                // Session OK : On affiche la page
+                document.getElementById('auth-loader').style.display = "none";
+                document.body.style.display = "block";
+                displayOrderSummary();
             } else {
-                // Pas de session détectée, retour au login
+                // Pas de session : Redirection immédiate
                 window.location.href = "login.html";
             }
         });
 
-        function initOrderDisplay() {
-            if (!orderInfo) {
+        function displayOrderSummary() {
+            if (!pendingOrder) {
                 window.location.href = "home.html";
                 return;
             }
-            const container = document.getElementById('order-summary');
-            const total = orderInfo.total || orderInfo.amountHTG;
-            container.innerHTML = `
-                <div class="preview-row"><span>Service</span><strong>${orderInfo.service}</strong></div>
-                <div class="preview-row"><span>Pack/Produit</span><strong>${orderInfo.item || orderInfo.amountUSD + " USD"}</strong></div>
-                <div class="preview-row"><span>ID/Cible</span><strong>${orderInfo.playerID || orderInfo.netflixEmail || orderInfo.beneficiary}</strong></div>
-                <div class="total-row"><span>À PAYER</span><strong>${total.toLocaleString()} HTG</strong></div>
+            const area = document.getElementById('summary-area');
+            const total = pendingOrder.total || pendingOrder.amountHTG;
+            area.innerHTML = `
+                <div class="summary-line"><span>Service</span><strong>${pendingOrder.service}</strong></div>
+                <div class="summary-line"><span>Détails</span><strong>${pendingOrder.item || pendingOrder.amountUSD + " USD"}</strong></div>
+                <div class="summary-line"><span>Bénéficiaire</span><strong>${pendingOrder.playerID || pendingOrder.netflixEmail || pendingOrder.beneficiary}</strong></div>
+                <div class="total-line"><span>TOTAL À PAYER</span><strong>${total.toLocaleString()} HTG</strong></div>
             `;
         }
 
-        function selectPay(m, el) {
-            payMethod = m;
-            document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
-            el.classList.add('active');
-            document.getElementById('inst-box').style.display = "block";
-            document.getElementById('payment-final-form').style.display = "block";
-            const body = document.getElementById('inst-details');
-            const area = document.getElementById('fields-area');
-            area.innerHTML = "";
+        function setMode(mode, element) {
+            currentMode = mode;
+            document.querySelectorAll('.pay-option').forEach(opt => opt.classList.remove('active'));
+            element.classList.add('active');
+            
+            document.getElementById('payment-details').style.display = "block";
+            document.getElementById('order-final-form').style.display = "block";
+            
+            const instBody = document.getElementById('inst-body');
+            const extra = document.getElementById('extra-fields');
+            extra.innerHTML = "";
 
-            if(m === 'MonCash') {
-                body.innerHTML = `<p>Faites le transfert vers :</p><div class="copy-box">+50939442808</div><p style="margin-top:10px;">Nom : <strong>Marco Bien-Aimé</strong></p>`;
-                area.innerHTML = `<div class="input-group"><label>Nom Expéditeur</label><input type="text" id="n-exp" required></div>
-                                 <div class="input-group"><label>Numéro MonCash</label><input type="tel" id="i-exp" required></div>`;
-            } else if(m === 'NatCash') {
-                body.innerHTML = `<p>Faites le transfert vers :</p><div class="copy-box">+50935741778</div><p style="margin-top:10px;">Nom : <strong>Marco Bien-Aimé</strong></p>`;
-                area.innerHTML = `<div class="input-group"><label>Nom Expéditeur</label><input type="text" id="n-exp" required></div>
-                                 <div class="input-group"><label>Numéro NatCash</label><input type="tel" id="i-exp" required></div>`;
-            } else if(m === 'USDT') {
-                body.innerHTML = `<p>Réseau TRC20 :</p><div class="copy-box" style="font-size:0.75rem;">TJHVCbXMBQdtzurHngB1aXSFkR9TWYvZ94</div>`;
-                area.innerHTML = `<div class="input-group"><label>Nom Application</label><input type="text" id="n-exp" required></div>
-                                 <div class="input-group"><label>Votre Adresse USDT</label><input type="text" id="i-exp" required></div>`;
+            if(mode === 'MonCash') {
+                instBody.innerHTML = `<p>Faites le transfert MonCash au :</p><div class="account-info">+50939442808</div><p>Nom : <strong>Marco Bien-Aimé</strong></p>`;
+                extra.innerHTML = `<div class="input-group"><label>Nom de l'expéditeur</label><input type="text" id="sender-n" required></div>
+                                  <div class="input-group"><label>Numéro MonCash utilisé</label><input type="tel" id="sender-p" required></div>`;
+            } else if(mode === 'NatCash') {
+                instBody.innerHTML = `<p>Faites le transfert NatCash au :</p><div class="account-info">+50935741778</div><p>Nom : <strong>Marco Bien-Aimé</strong></p>`;
+                extra.innerHTML = `<div class="input-group"><label>Nom de l'expéditeur</label><input type="text" id="sender-n" required></div>
+                                  <div class="input-group"><label>Numéro NatCash utilisé</label><input type="tel" id="sender-p" required></div>`;
+            } else if(mode === 'USDT') {
+                instBody.innerHTML = `<p>Envoyez USDT (TRC20) à l'adresse :</p><div class="account-info" style="font-size:0.75rem;">TJHVCbXMBQdtzurHngB1aXSFkR9TWYvZ94</div>`;
+                extra.innerHTML = `<div class="input-group"><label>Application Portefeuille</label><input type="text" id="sender-n" placeholder="Ex: Binance, Trust" required></div>
+                                  <div class="input-group"><label>Votre Adresse USDT</label><input type="text" id="sender-p" required></div>`;
             }
         }
 
-        function handleImg(input) {
+        function processImg(input) {
             const file = input.files[0];
             if (!file) return;
             const reader = new FileReader();
@@ -262,49 +269,50 @@
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    canvas.width = 800; canvas.height = (img.height / img.width) * 800;
+                    canvas.width = 800;
+                    canvas.height = (img.height / img.width) * 800;
                     ctx.drawImage(img, 0, 0, 800, canvas.height);
-                    imgBase64 = canvas.toDataURL("image/jpeg", 0.6);
-                    document.getElementById('file-label').innerText = "✓ IMAGE CHARGÉE ●";
+                    proofBase64 = canvas.toDataURL("image/jpeg", 0.5);
+                    document.getElementById('file-name-label').innerText = "✓ IMAGE PRÊTE ●";
                 };
                 img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
 
-        document.getElementById('payment-final-form').addEventListener('submit', async (e) => {
+        document.getElementById('order-final-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if(!currentUser) return alert("Session perdue. Veuillez recharger la page ●");
-            if(!imgBase64) return alert("Ajoutez la preuve d'envoi ●");
+            if(!sessionUser) return alert("Session expirée ●");
+            if(!proofBase64) return alert("Joindre le reçu ●");
 
-            document.getElementById('loader').style.display = "flex";
-            document.getElementById('v-btn').disabled = true;
+            document.getElementById('auth-loader').style.display = "flex";
+            document.getElementById('submit-btn').disabled = true;
 
             try {
                 await db.collection('commandes').add({
-                    userId: currentUser.uid,
-                    userEmail: currentUser.email,
-                    service: orderInfo.service,
-                    produit: orderInfo.item || (orderInfo.amountUSD + " USD"),
-                    detailsDestinataire: orderInfo.playerID || orderInfo.netflixEmail || orderInfo.beneficiary,
-                    methodePaiement: payMethod,
-                    nomExpediteur: document.getElementById('n-exp').value,
-                    infoExpediteur: document.getElementById('i-exp').value,
-                    montantPaye: document.getElementById('amt').value,
-                    preuveBase64: imgBase64,
+                    userId: sessionUser.uid,
+                    userEmail: sessionUser.email,
+                    service: pendingOrder.service,
+                    produit: pendingOrder.item || (pendingOrder.amountUSD + " USD"),
+                    detailsDestinataire: pendingOrder.playerID || pendingOrder.netflixEmail || pendingOrder.beneficiary,
+                    methodePaiement: currentMode,
+                    nomExpediteur: document.getElementById('sender-n').value,
+                    infoExpediteur: document.getElementById('sender-p').value,
+                    montantPaye: document.getElementById('final-amt').value,
+                    preuveBase64: proofBase64,
                     statut: "En attente",
                     date: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
                 localStorage.removeItem('pendingOrder');
-                alert("✓ Commande transmise avec succès !");
+                alert("✓ Commande envoyée ! Validation manuelle par Marco Bien-Aimé.");
                 window.location.href = "home.html";
 
             } catch (err) {
                 console.error(err);
-                alert("Erreur lors de l'envoi ●");
-                document.getElementById('loader').style.display = "none";
-                document.getElementById('v-btn').disabled = false;
+                alert("Erreur réseau ●");
+                document.getElementById('auth-loader').style.display = "none";
+                document.getElementById('submit-btn').disabled = false;
             }
         });
     </script>
