@@ -78,7 +78,7 @@
         }
         .payment-header p { color: var(--gray-text); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* ORDER PREVIEW */
+        /* RÉCAPITULATIF */
         .order-preview {
             background: var(--black-card);
             border: 1px solid var(--gold-solid);
@@ -92,7 +92,7 @@
         .preview-row strong { color: var(--white); font-weight: 600; }
         .preview-row.total { border-top: 1px dashed var(--border); margin-top: 10px; padding-top: 10px; font-weight: 800; font-size: 1.1rem; color: var(--gold-solid); }
 
-        /* METHODS */
+        /* MÉTHODES */
         .payment-methods {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -128,11 +128,9 @@
 
         .instruction-box h3 { font-size: 0.85rem; color: var(--gold-solid); text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-weight: 800; }
         .instruction-details { font-size: 0.8rem; }
-        .instruction-details p { margin-bottom: 8px; color: #bbb; }
-        .instruction-details strong { color: var(--white); font-weight: 700; }
-        .copy-val { background: var(--black); border: 1px solid var(--border); padding: 12px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; font-family: monospace; color: var(--gold-solid); font-size: 0.95rem; }
+        .copy-val { background: var(--black); border: 1px solid var(--border); padding: 12px; margin-top: 10px; font-family: monospace; color: var(--gold-solid); font-size: 0.95rem; text-align: center; }
 
-        /* FORM */
+        /* FORMULAIRE */
         .validation-form { display: none; margin-top: 20px; }
         .input-group { margin-bottom: 20px; }
         .input-group label { display: block; font-size: 0.7rem; color: var(--gold-solid); text-transform: uppercase; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px; }
@@ -153,12 +151,10 @@
             padding: 30px;
             text-align: center;
             cursor: pointer;
-            transition: 0.3s;
             border-radius: 4px;
         }
-        .file-upload-zone:hover { border-color: var(--gold-solid); }
         .file-upload-zone i { font-size: 1.8rem; color: var(--gold-solid); margin-bottom: 12px; display: block; }
-        .file-upload-zone p { font-size: 0.75rem; color: var(--gray-text); text-transform: uppercase; font-weight: 600; }
+        .file-upload-zone p { font-size: 0.75rem; color: var(--gray-text); text-transform: uppercase; }
 
         .btn-validate {
             width: 100%;
@@ -174,33 +170,19 @@
             border-radius: 2px;
             margin-top: 30px;
         }
-        .btn-validate:disabled { opacity: 0.5; cursor: not-allowed; }
 
         /* LOADER */
         .loader-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(5px);
             z-index: 3000;
             display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column; align-items: center; justify-content: center;
         }
-        .spinner { 
-            width: 45px; height: 45px; 
-            border: 3px solid rgba(212, 175, 55, 0.1); 
-            border-top: 3px solid var(--gold-solid); 
-            border-radius: 50%; 
-            animation: spin 1s linear infinite; 
-            margin-bottom: 20px; 
-        }
+        .spinner { width: 45px; height: 45px; border: 3px solid rgba(212, 175, 55, 0.1); border-top: 3px solid var(--gold-solid); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loader-text { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-solid); font-weight: 700; }
+        .loader-text { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-solid); }
 
     </style>
 </head>
@@ -208,7 +190,7 @@
 
     <div class="loader-overlay" id="global-loader">
         <div class="spinner"></div>
-        <p class="loader-text" id="loader-msg">Compression et envoi...</p>
+        <p class="loader-text">Transmission sécurisée...</p>
     </div>
 
     <header>
@@ -223,15 +205,15 @@
 
     <main>
         <div class="payment-header">
-            <h1>Validation Paiement</h1>
-            <p>Système de transfert sécurisé ●</p>
+            <h1>Confirmation d'Envoi</h1>
+            <p>Finalisez votre transaction ci-dessous ●</p>
         </div>
 
         <div class="order-preview">
-            <h4>Récapitulatif</h4>
+            <h4>Détails de la demande</h4>
             <div id="summary-content"></div>
             <div class="preview-row total">
-                <span>Total à régler</span>
+                <span>Total à envoyer</span>
                 <strong id="final-total">0 HTG</strong>
             </div>
         </div>
@@ -253,7 +235,7 @@
 
         <div class="payment-instructions" id="inst-container">
             <div class="instruction-box">
-                <h3 id="inst-title"><i class="fa-solid fa-circle-info"></i> Infos Marco Bien-Aimé</h3>
+                <h3 id="inst-title"><i class="fa-solid fa-user-shield"></i> Compte de Réception</h3>
                 <div class="instruction-details" id="inst-body"></div>
             </div>
         </div>
@@ -262,27 +244,26 @@
             <div id="dynamic-fields"></div>
             <div class="input-group">
                 <label>Montant envoyé (HTG / USDT)</label>
-                <input type="number" id="exact-amount" placeholder="Entrez le montant exact" required>
+                <input type="number" id="exact-amount" required>
             </div>
             <div class="input-group">
                 <label>Preuve de paiement (Screenshot)</label>
                 <div class="file-upload-zone" onclick="document.getElementById('proof-input').click()">
-                    <i class="fa-solid fa-camera-retro"></i>
-                    <p id="file-status">Ajouter la preuve (Image)</p>
-                    <input type="file" id="proof-input" accept="image/*" style="display:none" onchange="updateFileInfo(this)" required>
+                    <i class="fa-solid fa-file-invoice"></i>
+                    <p id="file-status">Ajouter la capture d'écran</p>
+                    <input type="file" id="proof-input" accept="image/*" style="display:none" onchange="compressImage(this)" required>
                 </div>
             </div>
             <button type="submit" class="btn-validate" id="submit-order-btn">Valider ma commande ✓</button>
         </form>
     </main>
 
-    <!-- FIREBASE SDK COMPAT -->
+    <!-- FIREBASE SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
     <script>
-        // CONFIGURATION
         const firebaseConfig = {
             apiKey: "AIzaSyB5_KighCQRfslRjZtGZPxs3OUqqQRk7IE",
             authDomain: "pay-fusion-26a79.firebaseapp.com",
@@ -295,17 +276,30 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        let orderData = JSON.parse(localStorage.getItem('pendingOrder'));
+        let globalUser = null; // Variable pour stocker l'utilisateur connecté
+        let base64Image = "";
         let selectedMethod = "";
-        let base64Image = ""; // Stockage de l'image convertie
+        let orderData = JSON.parse(localStorage.getItem('pendingOrder'));
+
+        // 1. OBSERVATEUR DE SESSION (RÉPARE TON ERREUR)
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                globalUser = user;
+                console.log("Session confirmée pour:", user.email);
+            } else {
+                console.log("Aucune session, redirection...");
+                window.location.href = "login.html";
+            }
+        });
 
         if(!orderData) window.location.href = "home.html";
 
+        // RÉSUMÉ
         const summary = document.getElementById('summary-content');
         document.getElementById('final-total').innerText = (orderData.total || orderData.amountHTG).toLocaleString() + " HTG";
         summary.innerHTML = `<div class="preview-row"><span>Service</span><strong>${orderData.service}</strong></div>
                             <div class="preview-row"><span>Produit</span><strong>${orderData.item || orderData.amountUSD + " USD"}</strong></div>
-                            <div class="preview-row"><span>Destinataire</span><strong>${orderData.beneficiary || orderData.playerID || orderData.netflixEmail}</strong></div>`;
+                            <div class="preview-row"><span>Cible</span><strong>${orderData.beneficiary || orderData.playerID || orderData.netflixEmail}</strong></div>`;
 
         function setPaymentMethod(method, el) {
             selectedMethod = method;
@@ -318,66 +312,65 @@
             fields.innerHTML = "";
 
             if(method === 'MonCash') {
-                instBody.innerHTML = `<p>Transfert vers :</p><div class="copy-val"><span>+50939442808</span></div><p>Nom : <strong>Marco Bien-Aimé</strong></p>`;
-                fields.innerHTML = `<div class="input-group"><label>Nom Expéditeur</label><input type="text" id="s-name" required></div>
+                instBody.innerHTML = `<p>Envoyez le transfert au :</p><div class="copy-val"><span>+50939442808</span></div><p>Nom : <strong>Marco Bien-Aimé</strong></p>`;
+                fields.innerHTML = `<div class="input-group"><label>Nom Complet</label><input type="text" id="s-name" required></div>
                                    <div class="input-group"><label>Numéro MonCash</label><input type="tel" id="s-info" required></div>`;
             } else if(method === 'NatCash') {
-                instBody.innerHTML = `<p>Transfert vers :</p><div class="copy-val"><span>+50935741778</span></div><p>Nom : <strong>Marco Bien-Aimé</strong></p>`;
-                fields.innerHTML = `<div class="input-group"><label>Nom Expéditeur</label><input type="text" id="s-name" required></div>
+                instBody.innerHTML = `<p>Envoyez le transfert au :</p><div class="copy-val"><span>+50935741778</span></div><p>Nom : <strong>Marco Bien-Aimé</strong></p>`;
+                fields.innerHTML = `<div class="input-group"><label>Nom Complet</label><input type="text" id="s-name" required></div>
                                    <div class="input-group"><label>Numéro NatCash</label><input type="tel" id="s-info" required></div>`;
             } else if(method === 'USDT') {
                 instBody.innerHTML = `<p>Réseau TRC20 :</p><div class="copy-val" style="font-size:0.7rem;"><span>TJHVCbXMBQdtzurHngB1aXSFkR9TWYvZ94</span></div>`;
-                fields.innerHTML = `<div class="input-group"><label>Application</label><input type="text" id="s-name" placeholder="Binance..." required></div>
-                                   <div class="input-group"><label>Adresse USDT (Départ)</label><input type="text" id="s-info" required></div>`;
+                fields.innerHTML = `<div class="input-group"><label>Nom Application</label><input type="text" id="s-name" required></div>
+                                   <div class="input-group"><label>Adresse Portefeuille</label><input type="text" id="s-info" required></div>`;
             }
         }
 
-        // CONVERSION IMAGE EN BASE64 + COMPRESSION
-        function updateFileInfo(input) {
+        // COMPRESSION IMAGE
+        function compressImage(input) {
             const file = input.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
                     const MAX_WIDTH = 800;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-                    canvas.width = width;
-                    canvas.height = height;
+                    let width = img.width; let height = img.height;
+                    if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                    canvas.width = width; canvas.height = height;
                     const ctx = canvas.getContext("2d");
                     ctx.drawImage(img, 0, 0, width, height);
-                    
-                    // On compresse en JPEG qualité 0.6 pour que ça tienne dans Firestore
                     base64Image = canvas.toDataURL("image/jpeg", 0.6);
-                    document.getElementById('file-status').innerText = "✓ Image prête ●";
+                    document.getElementById('file-status').innerText = "✓ Capture prête ●";
                 };
                 img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
 
+        // SOUMISSION (LOGIQUE RÉPARÉE)
         document.getElementById('pay-validation-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const user = auth.currentUser;
-            if(!user) return alert("Connectez-vous ●");
-            if(!base64Image) return alert("Veuillez ajouter une photo ●");
+            
+            // Vérification de la session via la variable globale mise à jour par l'observateur
+            if(!globalUser) {
+                alert("Erreur de session : Veuillez patienter 2 secondes ou vous reconnecter ●");
+                return;
+            }
+
+            if(!base64Image) {
+                alert("Veuillez joindre une capture d'écran ●");
+                return;
+            }
 
             const loader = document.getElementById('global-loader');
             loader.style.display = "flex";
 
             try {
-                // On enregistre TOUT dans Firestore (Base de données)
                 await db.collection('commandes').add({
-                    userId: user.uid,
-                    userEmail: user.email,
+                    userId: globalUser.uid,
+                    userEmail: globalUser.email,
                     service: orderData.service,
                     produit: orderData.item || (orderData.amountUSD + " USD"),
                     detailsDestinataire: orderData.beneficiary || orderData.playerID || orderData.netflixEmail,
@@ -385,18 +378,18 @@
                     nomExpediteur: document.getElementById('s-name').value,
                     infoExpediteur: document.getElementById('s-info').value,
                     montantPaye: document.getElementById('exact-amount').value,
-                    preuveBase64: base64Image, // L'image est ici !
+                    preuveBase64: base64Image,
                     statut: "En attente",
                     date: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
                 localStorage.removeItem('pendingOrder');
-                alert("✓ Commande transmise avec succès !");
+                alert("✓ Demande enregistrée ! Validation par l'admin sous 15-30 min.");
                 window.location.href = "home.html";
 
             } catch (error) {
                 console.error(error);
-                alert("Erreur base de données : " + error.message);
+                alert("Erreur critique : " + error.message);
                 loader.style.display = "none";
             }
         });
