@@ -3,159 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Accès Sécurisé | PAY FUSION</title>
-    
-    <!-- POLICE INTER -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- ICONS EXTERNES -->
+    <title>Connexion | PAY FUSION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
     <style>
-        /* =========================================
-           SYSTÈME DE DESIGN GOLD MÉTALLIQUE
-           ========================================= */
         :root {
-            --gold-gradient: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --gold: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
             --gold-solid: #D4AF37;
             --black: #000000;
-            --black-soft: #0A0A0A;
-            --black-card: #111111;
-            --white: #F8F8F8;
-            --gray-text: #888888;
+            --card: #111111;
             --border: #1A1A1A;
-            --error-red: #ef4444;
-            --font-size-base: 0.875rem; /* 14px */
+            --white: #F8F8F8;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            font-size: var(--font-size-base);
-            color: var(--white);
-            background-color: var(--black);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            overflow: hidden;
-        }
-
-        /* PROTECTION ANTI-BOUCLE (MASQUAGE INITIAL) */
-        #auth-checker {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--black); z-index: 10000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .spin { width: 35px; height: 35px; border: 3px solid rgba(184, 134, 11, 0.1); border-top: 3px solid var(--gold-solid); border-radius: 50%; animation: rot 0.8s linear infinite; }
-        @keyframes rot { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        /* LOGIN CARD */
-        .login-card {
-            width: 100%;
-            max-width: 400px;
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            padding: 50px 35px;
-            border-radius: 4px;
-            position: relative;
-        }
-
-        h1 {
-            text-align: center; font-size: 1.6rem; font-weight: 900; 
-            text-transform: uppercase; letter-spacing: 3px;
-            background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            text-align: center; color: var(--gray-text); font-size: 0.75rem;
-            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 40px;
-        }
-
-        /* FORMULAIRE */
-        .form-group { margin-bottom: 25px; }
-        .form-group label {
-            display: block; font-size: 0.7rem; color: var(--gold-solid);
-            font-weight: 700; text-transform: uppercase; margin-bottom: 8px;
-        }
-        .input-wrapper { position: relative; display: flex; align-items: center; }
-        .input-wrapper i { position: absolute; left: 15px; color: #444; font-size: 0.9rem; }
-        input {
-            width: 100%; padding: 15px 15px 15px 45px;
-            background: #000; border: 1px solid var(--border);
-            color: #fff; border-radius: 2px; outline: none;
-            font-family: 'Inter', sans-serif; transition: 0.3s;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--white); height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        
+        .login-box { width: 100%; max-width: 400px; background: var(--card); border: 1px solid var(--border); padding: 40px 30px; border-radius: 4px; text-align: center; }
+        h1 { font-size: 1.6rem; font-weight: 900; text-transform: uppercase; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 30px; letter-spacing: 2px; }
+        
+        .input-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; font-size: 0.7rem; color: var(--gold-solid); text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+        input { width: 100%; padding: 14px; background: #000; border: 1px solid var(--border); color: #fff; outline: none; font-size: 0.9rem; }
         input:focus { border-color: var(--gold-solid); }
+        
+        .btn-log { width: 100%; padding: 16px; background: var(--gold); border: none; color: #000; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-top: 10px; font-size: 0.8rem; }
+        .error { color: #ff4444; font-size: 0.75rem; margin-bottom: 15px; display: none; }
+        .link { margin-top: 25px; font-size: 0.8rem; color: #666; }
+        .link a { color: var(--gold-solid); text-decoration: none; font-weight: 700; }
 
-        .btn-submit {
-            width: 100%; padding: 18px;
-            background: var(--gold-gradient); color: var(--black);
-            border: none; font-weight: 900; text-transform: uppercase;
-            font-size: 0.85rem; letter-spacing: 1px; cursor: pointer;
-            margin-top: 10px; transition: 0.3s;
-        }
-        .btn-submit:disabled { opacity: 0.5; }
-
-        .footer-links { text-align: center; margin-top: 35px; font-size: 0.8rem; color: var(--gray-text); }
-        .footer-links a { color: var(--gold-solid); font-weight: 700; text-decoration: none; }
-
-        #error-box {
-            background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2);
-            color: var(--error-red); padding: 12px; font-size: 0.75rem;
-            text-align: center; margin-bottom: 25px; display: none;
-        }
-
+        /* ANTI-BOUCLE LOADER */
+        #checker { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+        .spin { width: 30px; height: 30px; border: 3px solid #222; border-top-color: var(--gold-solid); border-radius: 50%; animation: rot 0.8s linear infinite; }
+        @keyframes rot { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
+    <div id="checker"><div class="spin"></div></div>
 
-    <!-- ÉCRAN DE VÉRIFICATION ANTI-BOUCLE -->
-    <div id="auth-checker">
-        <div class="spin"></div>
-        <p style="margin-top: 20px; font-size: 0.6rem; color: var(--gold-solid); text-transform: uppercase; letter-spacing: 3px;">Authentification...</p>
-    </div>
-
-    <div class="login-card">
+    <div class="login-box">
         <h1>Connexion</h1>
-        <p class="subtitle">Espace Privé PAY FUSION</p>
-
-        <div id="error-box">Identifiants incorrects ou compte inexistant ●</div>
-
-        <form id="login-form">
-            <div class="form-group">
-                <label>Adresse Email</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="email" placeholder="email@exemple.com" required>
-                </div>
+        <div id="err" class="error">Identifiants incorrects ●</div>
+        <form id="logForm">
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="email" required>
             </div>
-
-            <div class="form-group">
+            <div class="input-group">
                 <label>Mot de passe</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="password" placeholder="••••••••" required>
-                </div>
+                <input type="password" id="pass" required>
             </div>
-
-            <button type="submit" class="btn-submit" id="submit-btn">Ouvrir ma session [ > ]</button>
+            <button type="submit" class="btn-log" id="btn">Se Connecter —</button>
         </form>
-
-        <div class="footer-links">
-            Pas encore membre ? <a href="register.html">Créer un compte ✓</a>
-        </div>
+        <div class="link">Nouveau ? <a href="register.html">S'inscrire ✓</a></div>
     </div>
 
-    <!-- FIREBASE SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-
     <script>
-        // CONFIGURATION RÉELLE NXY ST3PH
         const firebaseConfig = {
             apiKey: "AIzaSyAV3RoOAL4XgGQSGnEU0_Q1q5UcEce4LBg",
             authDomain: "pay-fusion-d0eaf.firebaseapp.com",
@@ -167,56 +71,27 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        const checker = document.getElementById('auth-checker');
-        const errBox = document.getElementById('error-box');
-
-        // =========================================
-        // SÉCURITÉ : DÉTECTION DE SESSION ACTIVE
-        // =========================================
+        // ANTI-BOUCLE : Redirection auto si déjà connecté
         auth.onAuthStateChanged(user => {
             if (user) {
-                // Utilisateur déjà là -> Redirection instantanée
-                if (user.email === "bmarcco4412@gmail.com") {
-                    window.location.replace("admin.html");
-                } else {
-                    window.location.replace("home.html");
-                }
+                window.location.replace(user.email === "bmarcco4412@gmail.com" ? "admin.html" : "home.html");
             } else {
-                // Personne -> On affiche le formulaire
-                checker.style.display = "none";
+                document.getElementById('checker').style.display = "none";
             }
         });
 
-        // =========================================
-        // LOGIQUE DE CONNEXION
-        // =========================================
-        document.getElementById('login-form').addEventListener('submit', (e) => {
+        document.getElementById('logForm').onsubmit = (e) => {
             e.preventDefault();
+            const btn = document.getElementById('btn');
+            btn.disabled = true; btn.innerText = "Vérification...";
             
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const btn = document.getElementById('submit-btn');
-
-            errBox.style.display = "none";
-            btn.disabled = true;
-            btn.innerText = "Vérification...";
-
-            // PERSISTENCE LOCALE (EMPÊCHE LA DÉCONNEXION AU RECHARGEMENT)
-            auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-                .then(() => {
-                    return auth.signInWithEmailAndPassword(email, password);
-                })
-                .then((userCredential) => {
-                    // La redirection est gérée automatiquement par onAuthStateChanged
-                    console.log("Connecté !");
-                })
-                .catch((error) => {
-                    console.error(error.code);
-                    errBox.style.display = "block";
-                    btn.disabled = false;
-                    btn.innerText = "Ouvrir ma session [ > ]";
-                });
-        });
+            auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
+                return auth.signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value);
+            }).catch(err => {
+                document.getElementById('err').style.display = "block";
+                btn.disabled = false; btn.innerText = "Se Connecter —";
+            });
+        };
     </script>
 </body>
 </html>
