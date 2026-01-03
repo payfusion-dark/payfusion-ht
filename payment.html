@@ -24,7 +24,6 @@
             --white: #F8F8F8;
             --gray-text: #888888;
             --border: #1A1A1A;
-            --error-red: #ef4444;
             --font-size-base: 0.875rem; /* 14px */
         }
 
@@ -44,9 +43,7 @@
             overflow-x: hidden;
         }
 
-        /* =========================================
-           HEADER FIXE
-           ========================================= */
+        /* HEADER */
         header {
             position: fixed;
             top: 0;
@@ -66,9 +63,7 @@
         .header-center img { height: 32px; object-fit: contain; }
         .header-right { width: 40px; }
 
-        /* =========================================
-           CONTENU PRINCIPAL
-           ========================================= */
+        /* CONTENT */
         main { padding: 100px 5% 40px; max-width: 600px; margin: 0 auto; }
 
         .payment-header { text-align: center; margin-bottom: 35px; }
@@ -83,10 +78,10 @@
         }
         .payment-header p { color: var(--gray-text); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* RÉCAPITULATIF COMMANDE */
+        /* ORDER PREVIEW */
         .order-preview {
             background: var(--black-card);
-            border: 1px solid var(--border);
+            border: 1px solid var(--gold-solid);
             padding: 20px;
             border-radius: 4px;
             margin-bottom: 30px;
@@ -97,7 +92,7 @@
         .preview-row strong { color: var(--white); font-weight: 600; }
         .preview-row.total { border-top: 1px dashed var(--border); margin-top: 10px; padding-top: 10px; font-weight: 800; font-size: 1.1rem; color: var(--gold-solid); }
 
-        /* CHOIX MÉTHODE PAIEMENT */
+        /* METHODS */
         .payment-methods {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -114,12 +109,12 @@
             transition: 0.3s;
         }
         .method-tab.active { border-color: var(--gold-solid); background: rgba(184, 134, 11, 0.05); }
-        .method-tab img { height: 22px; object-fit: contain; filter: grayscale(1); opacity: 0.5; transition: 0.3s; }
+        .method-tab img { height: 22px; filter: grayscale(1); opacity: 0.5; }
         .method-tab.active img { filter: grayscale(0); opacity: 1; }
         .method-tab span { display: block; font-size: 0.65rem; text-transform: uppercase; font-weight: 700; margin-top: 8px; color: var(--gray-text); }
         .method-tab.active span { color: var(--gold-solid); }
 
-        /* INSTRUCTIONS PAIEMENT */
+        /* INSTRUCTIONS */
         .payment-instructions {
             background: #080808;
             border: 1px solid var(--border);
@@ -137,7 +132,7 @@
         .instruction-details strong { color: var(--white); font-weight: 700; }
         .copy-val { background: var(--black); border: 1px solid var(--border); padding: 12px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; font-family: monospace; color: var(--gold-solid); font-size: 0.95rem; }
 
-        /* FORMULAIRE VALIDATION */
+        /* FORM */
         .validation-form { display: none; margin-top: 20px; }
         .input-group { margin-bottom: 20px; }
         .input-group label { display: block; font-size: 0.7rem; color: var(--gold-solid); text-transform: uppercase; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px; }
@@ -152,7 +147,6 @@
             font-size: 0.875rem;
             border-radius: 2px;
         }
-        .input-group input:focus { border-color: var(--gold-solid); }
 
         .file-upload-zone {
             border: 2px dashed var(--border);
@@ -162,7 +156,7 @@
             transition: 0.3s;
             border-radius: 4px;
         }
-        .file-upload-zone:hover { border-color: var(--gold-solid); background: rgba(184, 134, 11, 0.02); }
+        .file-upload-zone:hover { border-color: var(--gold-solid); }
         .file-upload-zone i { font-size: 1.8rem; color: var(--gold-solid); margin-bottom: 12px; display: block; }
         .file-upload-zone p { font-size: 0.75rem; color: var(--gray-text); text-transform: uppercase; font-weight: 600; }
 
@@ -179,11 +173,10 @@
             cursor: pointer;
             border-radius: 2px;
             margin-top: 30px;
-            transition: 0.3s;
         }
         .btn-validate:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* ÉCRAN DE CHARGEMENT */
+        /* LOADER */
         .loader-overlay {
             position: fixed;
             top: 0;
@@ -199,8 +192,7 @@
             justify-content: center;
         }
         .spinner { 
-            width: 45px; 
-            height: 45px; 
+            width: 45px; height: 45px; 
             border: 3px solid rgba(212, 175, 55, 0.1); 
             border-top: 3px solid var(--gold-solid); 
             border-radius: 50%; 
@@ -214,13 +206,11 @@
 </head>
 <body>
 
-    <!-- LOADER DE SOUMISSION -->
     <div class="loader-overlay" id="global-loader">
         <div class="spinner"></div>
-        <p class="loader-text" id="loader-msg">Traitement de la commande...</p>
+        <p class="loader-text" id="loader-msg">Compression et envoi...</p>
     </div>
 
-    <!-- HEADER -->
     <header>
         <div class="header-left">
             <a href="home.html"><i class="fa-solid fa-arrow-left"></i></a>
@@ -233,23 +223,19 @@
 
     <main>
         <div class="payment-header">
-            <h1>Validation du Paiement</h1>
-            <p>Suivez les instructions pour finaliser ✓</p>
+            <h1>Validation Paiement</h1>
+            <p>Système de transfert sécurisé ●</p>
         </div>
 
-        <!-- RÉSUMÉ COMMANDE -->
         <div class="order-preview">
-            <h4>Récapitulatif de la commande</h4>
-            <div id="summary-content">
-                <!-- Rempli par JS -->
-            </div>
+            <h4>Récapitulatif</h4>
+            <div id="summary-content"></div>
             <div class="preview-row total">
                 <span>Total à régler</span>
                 <strong id="final-total">0 HTG</strong>
             </div>
         </div>
 
-        <!-- SÉLECTION MÉTHODE -->
         <div class="payment-methods">
             <div class="method-tab" onclick="setPaymentMethod('MonCash', this)">
                 <img src="assets/logos/moncash-logo.png" alt="MonCash">
@@ -265,37 +251,28 @@
             </div>
         </div>
 
-        <!-- INSTRUCTIONS -->
         <div class="payment-instructions" id="inst-container">
             <div class="instruction-box">
-                <h3 id="inst-title"><i class="fa-solid fa-circle-info"></i> Instructions de transfert</h3>
-                <div class="instruction-details" id="inst-body">
-                    <!-- Rempli dynamiquement -->
-                </div>
+                <h3 id="inst-title"><i class="fa-solid fa-circle-info"></i> Infos Marco Bien-Aimé</h3>
+                <div class="instruction-details" id="inst-body"></div>
             </div>
         </div>
 
-        <!-- FORMULAIRE DE PREUVE -->
         <form class="validation-form" id="pay-validation-form">
-            <div id="dynamic-fields">
-                <!-- Champs nom/numéro injectés ici -->
-            </div>
-
+            <div id="dynamic-fields"></div>
             <div class="input-group">
                 <label>Montant envoyé (HTG / USDT)</label>
-                <input type="number" id="exact-amount" placeholder="Ex: 1500" required>
+                <input type="number" id="exact-amount" placeholder="Entrez le montant exact" required>
             </div>
-
             <div class="input-group">
                 <label>Preuve de paiement (Screenshot)</label>
                 <div class="file-upload-zone" onclick="document.getElementById('proof-input').click()">
-                    <i class="fa-solid fa-file-invoice-dollar"></i>
-                    <p id="file-status">Télécharger le reçu (Max 5Mo)</p>
+                    <i class="fa-solid fa-camera-retro"></i>
+                    <p id="file-status">Ajouter la preuve (Image)</p>
                     <input type="file" id="proof-input" accept="image/*" style="display:none" onchange="updateFileInfo(this)" required>
                 </div>
             </div>
-
-            <button type="submit" class="btn-validate" id="submit-order-btn">Confirmer ma commande ✓</button>
+            <button type="submit" class="btn-validate" id="submit-order-btn">Valider ma commande ✓</button>
         </form>
     </main>
 
@@ -303,10 +280,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
 
     <script>
-        // CONFIGURATION NOUVEAU PROJET (Vérifie bien tes clés)
+        // CONFIGURATION
         const firebaseConfig = {
             apiKey: "AIzaSyB5_KighCQRfslRjZtGZPxs3OUqqQRk7IE",
             authDomain: "pay-fusion-26a79.firebaseapp.com",
@@ -318,106 +294,87 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-        const storage = firebase.storage();
 
-        // DONNÉES DE LA COMMANDE
         let orderData = JSON.parse(localStorage.getItem('pendingOrder'));
         let selectedMethod = "";
+        let base64Image = ""; // Stockage de l'image convertie
 
-        if(!orderData) {
-            window.location.href = "home.html";
-        }
+        if(!orderData) window.location.href = "home.html";
 
-        // AFFICHAGE DU RÉSUMÉ
         const summary = document.getElementById('summary-content');
-        const totalDisp = document.getElementById('final-total');
-        
-        totalDisp.innerText = (orderData.total || orderData.amountHTG).toLocaleString() + " HTG";
-        summary.innerHTML = `
-            <div class="preview-row"><span>Catégorie</span><strong>${orderData.type}</strong></div>
-            <div class="preview-row"><span>Service</span><strong>${orderData.service}</strong></div>
-            <div class="preview-row"><span>Produit/Pack</span><strong>${orderData.item || orderData.amountUSD + " USD"}</strong></div>
-            <div class="preview-row"><span>ID / Email Destinataire</span><strong>${orderData.beneficiary || orderData.playerID || orderData.netflixEmail}</strong></div>
-        `;
+        document.getElementById('final-total').innerText = (orderData.total || orderData.amountHTG).toLocaleString() + " HTG";
+        summary.innerHTML = `<div class="preview-row"><span>Service</span><strong>${orderData.service}</strong></div>
+                            <div class="preview-row"><span>Produit</span><strong>${orderData.item || orderData.amountUSD + " USD"}</strong></div>
+                            <div class="preview-row"><span>Destinataire</span><strong>${orderData.beneficiary || orderData.playerID || orderData.netflixEmail}</strong></div>`;
 
-        // GESTION DES MÉTHODES
         function setPaymentMethod(method, el) {
             selectedMethod = method;
             document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
-
-            const instBox = document.getElementById('inst-container');
+            document.getElementById('inst-container').style.display = "block";
+            document.getElementById('pay-validation-form').style.display = "block";
             const instBody = document.getElementById('inst-body');
-            const form = document.getElementById('pay-validation-form');
             const fields = document.getElementById('dynamic-fields');
-
-            instBox.style.display = "block";
-            form.style.display = "block";
             fields.innerHTML = "";
 
             if(method === 'MonCash') {
-                instBody.innerHTML = `
-                    <p>Effectuez le transfert vers ce compte professionnel :</p>
-                    <div class="copy-val"><span>+50939442808</span><i class="fa-regular fa-copy"></i></div>
-                    <p style="margin-top:10px;">Propriétaire : <strong>Marco Bien-Aimé</strong></p>
-                    <p>Minimum requis : <strong>150 HTG</strong></p>
-                `;
-                fields.innerHTML = `<div class="input-group"><label>Nom de l'expéditeur</label><input type="text" id="s-name" placeholder="Nom complet" required></div>
-                                   <div class="input-group"><label>Numéro MonCash</label><input type="tel" id="s-info" placeholder="+509" required></div>`;
+                instBody.innerHTML = `<p>Transfert vers :</p><div class="copy-val"><span>+50939442808</span></div><p>Nom : <strong>Marco Bien-Aimé</strong></p>`;
+                fields.innerHTML = `<div class="input-group"><label>Nom Expéditeur</label><input type="text" id="s-name" required></div>
+                                   <div class="input-group"><label>Numéro MonCash</label><input type="tel" id="s-info" required></div>`;
             } else if(method === 'NatCash') {
-                instBody.innerHTML = `
-                    <p>Effectuez le transfert vers ce compte professionnel :</p>
-                    <div class="copy-val"><span>+50935741778</span><i class="fa-regular fa-copy"></i></div>
-                    <p style="margin-top:10px;">Propriétaire : <strong>Marco Bien-Aimé</strong></p>
-                    <p>Minimum requis : <strong>150 HTG</strong></p>
-                `;
-                fields.innerHTML = `<div class="input-group"><label>Nom de l'expéditeur</label><input type="text" id="s-name" placeholder="Nom complet" required></div>
-                                   <div class="input-group"><label>Numéro NatCash</label><input type="tel" id="s-info" placeholder="+509" required></div>`;
+                instBody.innerHTML = `<p>Transfert vers :</p><div class="copy-val"><span>+50935741778</span></div><p>Nom : <strong>Marco Bien-Aimé</strong></p>`;
+                fields.innerHTML = `<div class="input-group"><label>Nom Expéditeur</label><input type="text" id="s-name" required></div>
+                                   <div class="input-group"><label>Numéro NatCash</label><input type="tel" id="s-info" required></div>`;
             } else if(method === 'USDT') {
-                instBody.innerHTML = `
-                    <p>Envoyez le montant via le réseau <strong>TRC20</strong> :</p>
-                    <div class="copy-val" style="font-size:0.75rem;"><span>TJHVCbXMBQdtzurHngB1aXSFkR9TWYvZ94</span><i class="fa-regular fa-copy"></i></div>
-                    <p style="margin-top:10px;">Vérifiez bien le réseau (TRON / TRC20) avant l'envoi.</p>
-                `;
-                fields.innerHTML = `<div class="input-group"><label>Application utilisée (Ex: Binance)</label><input type="text" id="s-name" placeholder="Nom de l'application" required></div>
-                                   <div class="input-group"><label>Votre adresse USDT (Départ)</label><input type="text" id="s-info" placeholder="Adresse du portefeuille" required></div>`;
+                instBody.innerHTML = `<p>Réseau TRC20 :</p><div class="copy-val" style="font-size:0.7rem;"><span>TJHVCbXMBQdtzurHngB1aXSFkR9TWYvZ94</span></div>`;
+                fields.innerHTML = `<div class="input-group"><label>Application</label><input type="text" id="s-name" placeholder="Binance..." required></div>
+                                   <div class="input-group"><label>Adresse USDT (Départ)</label><input type="text" id="s-info" required></div>`;
             }
         }
 
+        // CONVERSION IMAGE EN BASE64 + COMPRESSION
         function updateFileInfo(input) {
-            const status = document.getElementById('file-status');
-            if(input.files[0]) status.innerText = "✓ Fichier : " + input.files[0].name;
-            else status.innerText = "Télécharger le reçu (Max 5Mo)";
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // On compresse en JPEG qualité 0.6 pour que ça tienne dans Firestore
+                    base64Image = canvas.toDataURL("image/jpeg", 0.6);
+                    document.getElementById('file-status').innerText = "✓ Image prête ●";
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
-        // SOUMISSION FINALE (LOGIQUE RÉELLE)
         document.getElementById('pay-validation-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const loader = document.getElementById('global-loader');
-            const submitBtn = document.getElementById('submit-order-btn');
-            const file = document.getElementById('proof-input').files[0];
-            
-            // Vérification utilisateur
             const user = auth.currentUser;
-            if(!user) {
-                alert("Erreur : Vous devez être connecté pour commander ●");
-                window.location.href = "login.html";
-                return;
-            }
+            if(!user) return alert("Connectez-vous ●");
+            if(!base64Image) return alert("Veuillez ajouter une photo ●");
 
+            const loader = document.getElementById('global-loader');
             loader.style.display = "flex";
-            submitBtn.disabled = true;
 
             try {
-                // 1. Upload vers Firebase Storage
-                console.log("Étape 1 : Upload de la preuve...");
-                const fileName = `preuves/${user.uid}/${Date.now()}_${file.name}`;
-                const storageRef = storage.ref(fileName);
-                const uploadTask = await storageRef.put(file);
-                const downloadURL = await uploadTask.ref.getDownloadURL();
-                
-                // 2. Enregistrement dans Firestore
-                console.log("Étape 2 : Création de la commande...");
+                // On enregistre TOUT dans Firestore (Base de données)
                 await db.collection('commandes').add({
                     userId: user.uid,
                     userEmail: user.email,
@@ -428,30 +385,21 @@
                     nomExpediteur: document.getElementById('s-name').value,
                     infoExpediteur: document.getElementById('s-info').value,
                     montantPaye: document.getElementById('exact-amount').value,
-                    preuveUrl: downloadURL,
+                    preuveBase64: base64Image, // L'image est ici !
                     statut: "En attente",
                     date: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                // 3. Finalisation
                 localStorage.removeItem('pendingOrder');
-                alert("✓ Commande reçue ! Elle est maintenant en attente de validation par l'administrateur.");
+                alert("✓ Commande transmise avec succès !");
                 window.location.href = "home.html";
 
             } catch (error) {
-                console.error("ERREUR CRITIQUE :", error);
+                console.error(error);
+                alert("Erreur base de données : " + error.message);
                 loader.style.display = "none";
-                submitBtn.disabled = false;
-                
-                let errorMsg = "Erreur lors de la validation ● ";
-                if(error.code === 'storage/unauthorized') errorMsg += "Accès au stockage refusé. Vérifiez vos règles Storage.";
-                else if(error.code === 'permission-denied') errorMsg += "Accès Firestore refusé. Vérifiez vos règles Firestore.";
-                else errorMsg += error.message;
-
-                alert(errorMsg);
             }
         });
-
     </script>
 </body>
 </html>
